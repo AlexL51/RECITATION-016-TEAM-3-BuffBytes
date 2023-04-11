@@ -1,1 +1,14 @@
+Team Meeting with Nikita #1:
 
+Going over the pure requirements; need all stuff listed in the project guide.
+
+3 commits per week per person. Commit early, commit often (but not too often).
+
+Everyone needs to work weekly and not tied to the lab we have on Friday. The schedule will revolve around our Tuesday meetings with Nikita.
+
+We need release notes.
+
+We need to fill the project board.
+- IE Register Page: EJS page, register API, and the database to insert into. User story: as I user, I will enter my details and I will be navigated to login if succesful.
+  - For backend: user stories are assumed that the user knows how our program works (ie: be able to insert my post into a database)
+- Register will be broken down into front end and back end epics
