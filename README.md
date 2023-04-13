@@ -1,14 +1,37 @@
 # RECITATION-016-TEAM-3-BuffBytes
 
-The ReadMe.md should include the following:
+## Brief Application Description
 
-Brief Application description
-Contributors - In this case, it will be the team Members
-Technology Stack used for the project
-Prerequisites to run the application - Any software that needs to be installed to run the application
-Instructions on how to run the application locally.
-How to run the tests
-Link to the deployed application
-You should be updating the ReadMe.md file as you progress through the project. You should be adding/revising sections as you add new features to the application.
+An accessible web application for CU students. This app would replace the disarrayed constellation of club Discords, Piazza posts, and Canvas forum posts with a united space for CU students to socialize, coordinate meetings, and discuss academics. Verified professors and staff members can answer questions and provide clarifications.
 
-Test edit
+## Contributors
+
+* Sean Carter -- Backend
+* Maxwell Folger -- Backend
+* Alex Ludwigson -- Frontend
+* Jesus Carnero -- Frontend
+* Ben Lipman
+
+## Technology Stack
+
+### Frontend:
+
+* Bootstrap JS
+
+### Backend:
+
+* NodeJS
+* PostgreSQL
+* Axios
+
+## Prerequisites
+
+* Python (VERSION?)
+
+## Running Tests
+
+TO BE ADDED (Useable for our demo)
+
+## Link to Deployed Application
+
+TO BE ADDED
