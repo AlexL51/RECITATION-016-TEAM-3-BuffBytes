@@ -16,6 +16,7 @@ An accessible web application for CU students. This app would replace the disarr
 
 ### Frontend:
 
+* EJS
 * Bootstrap JS
 
 ### Backend:
