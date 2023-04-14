@@ -12,15 +12,16 @@ CREATE TABLE users (
 CREATE TABLE topics (
   post_id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
-  subject VARCHAR(1000)) NOT NULL,
+  subject VARCHAR(1000) NOT NULL,
   body TEXT,
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
 CREATE TABLE comments (
   comment_id SERIAL PRIMARY KEY,
+  post_id INT NOT NULL,
   user_id INT NOT NULL,
-  path TEXT,
+  chain TEXT,
   body TEXT,
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
