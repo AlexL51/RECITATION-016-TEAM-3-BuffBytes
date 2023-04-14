@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 
 // Endpoint 2: Test Database
 app.get('/testDatabase', function (req, res) {
-
+  console.log('Testing database!');
   // Multiple queries using templated strings
   var getUsersQuery = `select * from users;`;
   // use task to execute multiple queries
@@ -60,9 +60,7 @@ app.get('/testDatabase', function (req, res) {
     .catch(err => {
       console.log('Endpoint 1 Failed');
       console.log(err);
-      res.status('400').json({
-        data
-      });
+      res.status(400).json({error: 'Failed to get data from database.'});
     });
 });
 
