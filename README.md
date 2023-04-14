@@ -1,8 +1,6 @@
 # RECITATION-016-TEAM-3-BuffBytes
 
-## Brief Application Description
-
-An accessible web application for CU students. This app would replace the disarrayed constellation of club Discords, Piazza posts, and Canvas forum posts with a united space for CU students to socialize, coordinate meetings, and discuss academics. Verified professors and staff members can answer questions and provide clarifications.
+An accessible web forum for CU students. This app would replace the disarrayed constellation of club Discords, Piazza posts, and Canvas forum posts with a united space for CU students to socialize, coordinate meetings, and discuss academics. Verified professors and staff members can answer questions and provide clarifications.
 
 ## Contributors
 
