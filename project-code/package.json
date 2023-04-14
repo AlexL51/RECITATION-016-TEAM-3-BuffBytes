@@ -1,5 +1,3 @@
-// Make sure to add bcrypt and axios
-
   {
     "name": "project-3308",
     "main": "index.js",
