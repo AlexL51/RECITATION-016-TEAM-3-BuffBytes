@@ -1,0 +1,60 @@
+    <!-- Main HTML Code -->
+
+    <%- include ('../partials/header') %> 
+
+    <% if (locals.message) { %>
+        <div
+          class="alert alert-<%- locals.error ? 'danger' : 'success' %>"
+          role="alert"
+        >
+          <%= message %>
+        </div>
+    `<% } %>
+
+<main>
+  <div class="container">
+    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+    <table>
+        <thead>
+            <th scope="col"> COURSE ID</th>
+            <th scope="col"> COURSE NAME</th>
+            <th scope="col"> CREDIT HOURS</th>
+        </thead>
+        <tbody>
+            <!-- Problem with an unexpected 'else' token here, somehow? -->
+            <% if(courses) { %>
+            <% courses.forEach(function(item) { %>
+                <tr>
+                    <td><%- item.course_id %></td>
+                    <td><%- item.course_name %></td>
+                    <td><%- item.credit_hours %></td>
+
+                    <!-- Before displaying the rows, you will first use if and else conditions 
+                        to validate the value of locals.action. The value of this variable would be 
+                        add if the prerequisites of this course are satisfied and the course hasn't 
+                        been taken. The value of this variable would be delete if this page has a 
+                        query parameter as taken=true-->
+
+                    <% if (locals.action == 'delete') { %>
+                        <td> 
+                            <form action="/courses/delete" method="post">
+                                <input type = "hidden" name = "course_id" class= "nav-link" value="<%- item.course_id %>" />
+                                <button type="submit" > DELETE </button>
+                            </form>
+                        </td>
+                    <% } else { %>
+                        <td> 
+                            <form action="/courses/add" method="post">
+                                <input type = "hidden" name = "course_id" class= "nav-link" value="<%- item.course_id %>"/>
+                                <button type="submit">ADD</button>
+                            </form>
+                        <td> 
+                    <% } %>
+                </tr>
+            <% })}; %>
+        </tbody>
+    </table>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>
