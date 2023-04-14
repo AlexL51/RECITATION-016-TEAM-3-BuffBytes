@@ -1,39 +1,29 @@
 -- Using path enumeration to store recursive comment threads in SQL. See slide 55 of this slidedeck:
--- https://www.slideshare.net/billkarwin/sql-antipatterns-strike-back?src=embed
-
+-- https://www.slideshare.net/billkarwin/sql-antipatterns-strike-back?src=embeds
+-- TEXT Supports truly infinite depth
 
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
   username VARCHAR(255) NOT NULL,
-  image_link VARCHAR(255) NOT NULL,
+  profile_image VARCHAR(255) NOT NULL,
   description TEXT
 );
 
-CREATE TABLE posts (
+CREATE TABLE topics (
   post_id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
   subject VARCHAR(1000)) NOT NULL,
-  body TEXT
+  body TEXT,
+  FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
 CREATE TABLE comments (
-  id SERIAL PRIMARY KEY,
-  username VARCHAR(255) NOT NULL,
-  image_link VARCHAR(255) NOT NULL,
-  description TEXT
+  comment_id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  path TEXT,
+  body TEXT,
+  FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
-DROP TABLE IF EXISTS users_to_posts CASCADE;
-CREATE TABLE users_to_posts (
-  user_id INT NOT NULL,
-  post_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES posts (user_id),
-  FOREIGN KEY (post_id) REFERENCES reviews (post_id)
-);
-
-DROP TABLE IF EXISTS users_to_comments CASCADE;
-CREATE TABLE users_to_comments (
-  user_id INT NOT NULL,
-  comment_id INT NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES posts (user_id),
-  FOREIGN KEY (post_id) REFERENCES reviews (post_id)
-);
+-- Tables users_to_comments and users_to_topics may be useful if we ever want to 
+-- display all of the topics / comments from a certain user.
