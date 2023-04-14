@@ -1,16 +1,15 @@
 const http = require("http"); 
 //create a server object: 
-http 
-    .createServer(function (req, res) { 
-    res.write("<h1>Hello World!</h1>"); 
-    //write a response to the client  
-    res.end();
-    //end the response 
-    }) .listen(3000); 
+
+module.exports = app.listen(3000);
 //Server runs on localhost:3000 
 
 app.get('/login', (req, res)=>{
     res.render('pages/login.ejs');
+});
+
+app.get('/welcome', (req, res) => {
+  res.json({status: 'success', message: 'Welcome!'});
 });
 
 app.post('/login', async (req, res)=>{
