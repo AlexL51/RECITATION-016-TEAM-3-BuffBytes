@@ -1,30 +1,16 @@
--- Using path enumeration to store recursive comment threads in SQL. See slide 55 of this slidedeck:
--- https://www.slideshare.net/billkarwin/sql-antipatterns-strike-back?src=embeds
--- TEXT Supports truly infinite depth
+-- Use '' to escape apostraphes in strings.
 
-CREATE TABLE users (
-  user_id SERIAL PRIMARY KEY,
-  username VARCHAR(255) NOT NULL,
-  profile_image VARCHAR(255) NOT NULL,
-  description TEXT
-);
+insert into users (user_id, username, profile_image, description) values (1, 'collisteru', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'this person prefers to maintain an air of mystery about them.');
+insert into users (user_id, username, profile_image, description) values (2, 'bank', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'a description of bank');
+insert into users (user_id, username, profile_image, description) values (3, 'dijkstra','https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'a description of dijstra');
+insert into users (user_id, username, profile_image, description) values (4, 'lovelace', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'a description of lovelace');
+insert into users (user_id, username, profile_image, description) values (5, 'allen', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'a description of allen');
 
-CREATE TABLE topics (
-  post_id SERIAL PRIMARY KEY,
-  user_id INT NOT NULL,
-  subject VARCHAR(1000) NOT NULL,
-  body TEXT,
-  FOREIGN KEY (user_id) REFERENCES users (user_id)
-);
+insert into topics (post_id, user_id, subject, body) values (1, 3, 'Test Post', 'What will be on the test?');
+insert into topics (post_id, user_id, subject, body) values (2, 5, 'Other Post', 'Nothing is complete without a second example.');
 
-CREATE TABLE comments (
-  comment_id SERIAL PRIMARY KEY,
-  post_id INT NOT NULL,
-  user_id INT NOT NULL,
-  chain TEXT,
-  body TEXT,
-  FOREIGN KEY (user_id) REFERENCES users (user_id)
-);
 
--- Tables users_to_comments and users_to_topics may be useful if we ever want to 
--- display all of the topics / comments from a certain user.
+insert into comments (comment_id, user_id, post_id, chain, body) values (1, 5, 1, '\', 'I''m pretty sure SQL will be on there.');
+insert into comments (comment_id, user_id, post_id, chain, body) values (2, 2, 1, '\1', 'no nested sql commands pls');
+insert into comments (comment_id, user_id, post_id, chain, body) values (3, 3, 1, '\1\2', 'They are not as difficult as they appear, as long as you...');
+insert into comments (comment_id, user_id, post_id, chain, body) values (4, 4, 1, '\1', 'That''s not too bad');
