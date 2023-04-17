@@ -14,6 +14,11 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
 
+// Change app settings
+
+app.set('view engine', 'ejs');
+app.use(bodyParser.json());
+
 
 // ***********************************
 // Database Initialization
@@ -37,35 +42,24 @@ const db = pgp(dbConfig);
 // Test Endpoints
 // ****************************************************
 
-// <!-- Endpoint 1 :  Default endpoint ("/") -->
-const message = 'Hey there!';
-app.get('/', (req, res) => {
-  res.send(message);
-});
-
-// Endpoint 2: Test Database
+// Test Database Endpoint
 app.get('/testDatabase', function (req, res) {
   console.log('Testing database!');
-  // Multiple queries using templated strings
+
   var getUsersQuery = `select * from users;`;
-  // use task to execute multiple queries
-  db.task('get-everything', task => {
-    return task.batch([task.any(getUsersQuery)]);
-  })
-    // if query execution succeeds
-    // query results can be obtained
-    // as shown below
-    .then(data => {
+
+  db.any(getUsersQuery)
+    .then(queryResult => {
+      // Success
+      console.log("Success!")
+      // QueryResult tested and works
       res.render("pages/testDatabase", {
-        data
+        queryResult
       });
+
     })
-    // if query execution fails
-    // send error message
-    .catch(err => {
-      console.log('Endpoint 1 Failed');
+    .catch(function (err) {
       console.log(err);
-      res.status(400).json({error: 'Failed to get data from database.'});
     });
 });
 
@@ -73,37 +67,37 @@ app.get('/testDatabase', function (req, res) {
 // Real Endpoints
 // ****************************************************
 
+// Default Endpoint
 app.get('/', (req, res)=>{
   res.redirect('/login');
 });
-
 
 app.get('/login', (req, res)=>{
     res.render('pages/login.ejs');
 });
 
 app.post('/login', async (req, res)=>{
-    const query = "SELECT * FROM users WHERE (username = $1);";
-    db.any(query,[req.body.username])
-    .then(async (data)=>{
-      const user = data;
-      console.log(data);
-      const match = await bcrypt.compare(req.body.password, data[0].password);
-      if(match){
-        req.session.user = user;
-        req.session.save();
-        res.redirect('/home');
-      }
-      else{
-        res.redirect('/register');
-      }
-    })
-    .catch(function(err){
-      console.log(err);
-      res.render('pages/login.ejs', {message: 'Incorrect username or password.'});
-    })
+  res.render('pages/login.ejs');
+  const query = "SELECT * FROM users WHERE (username = $1);";
+  db.any(query,[req.body.username])
+  .then(async (data)=>{
+    const user = data;
+    console.log(data);
+    const match = await bcrypt.compare(req.body.password, data[0].password);
+    if(match){
+      req.session.user = user;
+      req.session.save();
+      res.redirect('/home');
+    }
+    else{
+      res.redirect('/register');
+    }
+  })
+  .catch(function(err){
+    console.log(err);
+    res.render('pages/login.ejs', {message: 'Incorrect username or password.'});
+  })
 });
-
 
 
 app.get('/register', (req, res)=>{
@@ -136,4 +130,3 @@ app.get('/home', (req,res)=>{
 app.listen(3000, () => {
   console.log('listening on port 3000');
 });
-
