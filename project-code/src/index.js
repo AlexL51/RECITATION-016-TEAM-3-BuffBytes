@@ -1,13 +1,20 @@
 const http = require("http"); 
-//create a server object: 
-http 
-    .createServer(function (req, res) { 
-    res.write("<h1>Hello World!</h1>"); 
-    //write a response to the client  
-    res.end();
-    //end the response 
-    }) .listen(3000); 
-//Server runs on localhost:3000 
+
+// Import Dependencies
+
+const express = require('express'); // To build an application server or API
+const app = express();
+const pgp = require('pg-promise')(); // To connect to the Postgres DB from the node server
+const bodyParser = require('body-parser');
+const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
+const bcrypt = require('bcrypt'); //  To hash passwords
+const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
+
+
+app.get('/', (req, res)=>{
+  res.redirect('/login');
+});
+
 
 app.get('/login', (req, res)=>{
     res.render('pages/login.ejs');
@@ -59,3 +66,8 @@ app.post('/register', async (req,res)=>{
 app.get('/home', (req,res)=>{
     res.render('pages/home.ejs');
 });
+
+// Star the server
+// starting the server and keeping the connection open to listen for more requests
+app.listen(3000);
+console.log('Server is listening on port 3000');
