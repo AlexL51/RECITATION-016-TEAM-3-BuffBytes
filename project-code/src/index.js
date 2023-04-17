@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // *********************************
 // <!-- Section 1 : Dependencies-->
 // *********************************
@@ -7,15 +6,28 @@
 // Express is a NodeJS framework that, among other features, allows us to create HTML templates.
 const express = require('express');
 const bodyParser = require('body-parser');
-const pgp = require('pg-promise')();
 require('dotenv').config();
-
-// ***********************************
-// <!-- Section 2 : Initialization-->
-// ***********************************
-
-// defining the Express app
+const http = require("http"); 
 const app = express();
+const pgp = require('pg-promise')(); // To connect to the Postgres DB from the node server
+const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
+const bcrypt = require('bcrypt'); //  To hash passwords
+const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
+
+
+// *********************************
+// Start Server
+// *********************************
+// starting the server and keeping the connection open to listen for more requests
+app.listen(3000, () => {
+  console.log('listening on port 3000');
+});
+
+
+// ***********************************
+// Database Initialization
+// ***********************************
+
 // using bodyParser to parse JSON in the request body into JS objects
 app.use(bodyParser.json());
 // Database connection details
@@ -28,6 +40,7 @@ const dbConfig = {
 };
 // Connect to database using the above details
 const db = pgp(dbConfig);
+
 
 // ****************************************************
 // Test Endpoints
@@ -65,26 +78,9 @@ app.get('/testDatabase', function (req, res) {
     });
 });
 
-// *********************************
-// Start Server
-// *********************************
-// starting the server and keeping the connection open to listen for more requests
-app.listen(3000, () => {
-  console.log('listening on port 3000');
-});
-=======
-const http = require("http"); 
-
-// Import Dependencies
-
-const express = require('express'); // To build an application server or API
-const app = express();
-const pgp = require('pg-promise')(); // To connect to the Postgres DB from the node server
-const bodyParser = require('body-parser');
-const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
-const bcrypt = require('bcrypt'); //  To hash passwords
-const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
-
+// ****************************************************
+// Real Endpoints
+// ****************************************************
 
 app.get('/', (req, res)=>{
   res.redirect('/login');
@@ -146,4 +142,3 @@ app.get('/home', (req,res)=>{
 // starting the server and keeping the connection open to listen for more requests
 app.listen(3000);
 console.log('Server is listening on port 3000');
->>>>>>> 8f63f2872eef675747086709ec25c661d493ea79
