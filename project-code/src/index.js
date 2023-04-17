@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // *********************************
 // <!-- Section 1 : Dependencies-->
 // *********************************
@@ -71,3 +72,78 @@ app.get('/testDatabase', function (req, res) {
 app.listen(3000, () => {
   console.log('listening on port 3000');
 });
+=======
+const http = require("http"); 
+
+// Import Dependencies
+
+const express = require('express'); // To build an application server or API
+const app = express();
+const pgp = require('pg-promise')(); // To connect to the Postgres DB from the node server
+const bodyParser = require('body-parser');
+const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
+const bcrypt = require('bcrypt'); //  To hash passwords
+const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
+
+
+app.get('/', (req, res)=>{
+  res.redirect('/login');
+});
+
+
+app.get('/login', (req, res)=>{
+    res.render('pages/login.ejs');
+});
+
+app.post('/login', async (req, res)=>{
+    const query = "SELECT * FROM users WHERE (username = $1);";
+    db.any(query,[req.body.username])
+    .then(async (data)=>{
+      const user = data;
+      console.log(data);
+      const match = await bcrypt.compare(req.body.password, data[0].password);
+      if(match){
+        req.session.user = user;
+        req.session.save();
+        res.redirect('/home');
+      }
+      else{
+        res.redirect('/register');
+      }
+    })
+    .catch(function(err){
+      console.log(err);
+      res.render('pages/login.ejs', {message: 'Incorrect username or password.'});
+    })
+});
+
+
+
+app.get('/register', (req, res)=>{
+    res.render('pages/register.ejs');
+});
+
+
+app.post('/register', async (req,res)=>{
+    //still need to come up with a place holder image when they register.
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const query = 'INSERT INTO users (username, password) values ($1, $2);';
+    db.any(query,[req.body.username, hash])
+    .then(function(data) {
+        res.redirect('/login');
+    })
+    .catch(function(err){
+      console.log(err);
+      res.redirect('/register');
+    })
+});
+
+app.get('/home', (req,res)=>{
+    res.render('pages/home.ejs');
+});
+
+// Star the server
+// starting the server and keeping the connection open to listen for more requests
+app.listen(3000);
+console.log('Server is listening on port 3000');
+>>>>>>> 8f63f2872eef675747086709ec25c661d493ea79
