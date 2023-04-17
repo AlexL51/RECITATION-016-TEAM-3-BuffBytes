@@ -15,15 +15,6 @@ const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
 
 
-// *********************************
-// Start Server
-// *********************************
-// starting the server and keeping the connection open to listen for more requests
-app.listen(3000, () => {
-  console.log('listening on port 3000');
-});
-
-
 // ***********************************
 // Database Initialization
 // ***********************************
@@ -138,7 +129,11 @@ app.get('/home', (req,res)=>{
     res.render('pages/home.ejs');
 });
 
-// Star the server
+// *********************************
+// Start Server
+// *********************************
 // starting the server and keeping the connection open to listen for more requests
-app.listen(3000);
-console.log('Server is listening on port 3000');
+app.listen(3000, () => {
+  console.log('listening on port 3000');
+});
+
