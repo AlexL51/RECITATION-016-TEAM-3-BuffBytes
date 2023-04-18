@@ -106,10 +106,28 @@ app.get('/register', (req, res)=>{
 
 
 app.post('/register', async (req,res)=>{
-    //still need to come up with a place holder image when they register.
-    const hash = await bcrypt.hash(req.body.password, 10);
+
+  async function hashPassword(password) {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(password, salt);
+      return hash;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error while hashing password');
+    }
+  }
+
+  const hashedPassword = hashPassword(req.body.password)
+    .then((hash) => {
+      console.log('Hash:', hash);7
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
     const query = 'INSERT INTO users (username, password) values ($1, $2);';
-    db.any(query,[req.body.username, hash])
+    db.any(query,[req.body.username, hashedPassword])
     .then(function(data) {
         res.redirect('/login');
     })
