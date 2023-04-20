@@ -4,7 +4,9 @@ services:
     image: postgres:14
     env_file: .env
     expose:
-      - '5432'
+      - '5431'
+    ports:
+      - '5431:5431'
     volumes:
       - group-project:/var/lib/postgresql/data
       - ./src/init_data:/docker-entrypoint-initdb.d

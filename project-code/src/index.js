@@ -126,8 +126,9 @@ app.post('/register', async (req,res)=>{
       console.error(error);
     });
 
-    const query = 'INSERT INTO users (username, password) values ($1, $2);';
-    db.any(query,[req.body.username, hashedPassword])
+    const query = `INSERT INTO users (username, profile_image, password, description) 
+          values ($1, 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', $2, 'Add a description of yourself here.');`
+    db.any(query, [req.body.username, hashedPassword])
     .then(function(data) {
         res.redirect('/login');
     })
