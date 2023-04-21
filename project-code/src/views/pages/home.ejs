@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head> 
+  <title><%= title %></title>
+</head>
+<body>
+    <%- include ('../partials/header') %> 
+    <div class = "container">
+        <div class="row"> 
+            
+            <h4>Posts</h4>
+            < %topics.forEach(function(post) { %>
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= post.post_id</h5>
+                            <p width ="250px"
+                                white-space="nowrap" 
+                                overflow="hidden"
+                                text-overflow="ellipsis" 
+                                class="card-text"><%= post.body</p>
+                        </div>
+                    </div>
+                </div>
+            }); %>
+            
+
+
+        </div>
+    </div>
+
+</body>
+
+<footer>
+    <%- include ('../partials/footer') %> 
+</footer>
+  
+</html>
