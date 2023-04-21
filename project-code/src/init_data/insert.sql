@@ -15,6 +15,9 @@ insert into topics (post_id, user_id, subject, body) values (2, 5, 'Other Post',
 
 select setval(pg_get_serial_sequence('topics', 'post_id'), (select max(post_id) from topics)+1);
 
+
+-- The chain value shows the "heritage," or chain of parents, of a certain comment. A top-level comment has a chain of '\'. A comment that replies to the comment with a comment_id of 
+-- 1 will have a chain of '/1'. If that comment has a comment id of 2.
 insert into comments (comment_id, user_id, post_id, chain, body) values (1, 5, 1, '\', 'I''m pretty sure SQL will be on there.');
 insert into comments (comment_id, user_id, post_id, chain, body) values (2, 2, 1, '\1', 'no nested sql commands pls');
 insert into comments (comment_id, user_id, post_id, chain, body) values (3, 3, 1, '\1\2', 'They are not as difficult as they appear, as long as you...');

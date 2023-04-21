@@ -118,14 +118,16 @@ app.post('/register', async (req,res)=>{
     }
   }
 
-  const hashedPassword = hashPassword(req.body.password)
+  const hashedPassword = await hashPassword(req.body.password)
     .then((hash) => {
       console.log('Hash:', hash);
+      return hash;
     })
     .catch((error) => {
       console.error(error);
     });
 
+    console.log("hashedPassword: ", hashedPassword);
     const query = `INSERT INTO users (username, profile_image, password, description) 
           values ($1, 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', $2, 'Add a description of yourself here.');`
     db.any(query, [req.body.username, hashedPassword])
