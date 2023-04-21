@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 // Database connection details
 const dbConfig = {
   host: 'db',
-  port: 5431,
+  port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
@@ -41,6 +41,10 @@ const db = pgp(dbConfig);
 // ****************************************************
 // Test Endpoints
 // ****************************************************
+app.get('/welcome', (req, res) => {
+  res.json({status: 'success', message: 'Welcome!'});
+});
+
 
 // Test Database Endpoint
 app.get('/testDatabase', function (req, res) {
@@ -77,7 +81,6 @@ app.get('/login', (req, res)=>{
 });
 
 app.post('/login', async (req, res)=>{
-  res.render('pages/login.ejs');
   const query = "SELECT * FROM users WHERE (username = $1);";
   db.any(query,[req.body.username])
   .then(async (data)=>{
@@ -87,10 +90,10 @@ app.post('/login', async (req, res)=>{
     if(match){
       req.session.user = user;
       req.session.save();
-      res.redirect('/home');
+      res.redirect('/home', {message: 'Success'});
     }
     else{
-      res.redirect('/register');
+      res.json({message: 'Incorrect username or password.'});
     }
   })
   .catch(function(err){
@@ -146,6 +149,6 @@ app.get('/home', (req,res)=>{
 // Start Server
 // *********************************
 // starting the server and keeping the connection open to listen for more requests
-app.listen(3000, () => {
+module.exports = app.listen(3000, () => {
   console.log('listening on port 3000');
 });
