@@ -142,6 +142,12 @@ app.get('/home', (req,res)=>{
     res.render('pages/home.ejs');
 });
 
+app.get('/logout', (req, res)=>{
+  req.session.user = null;
+  req.session.delete();
+  res.render('pages/login.ejs', {message: 'logged out successfully'});
+})
+
 // *********************************
 // Start Server
 // *********************************
