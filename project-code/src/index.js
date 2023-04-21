@@ -147,6 +147,10 @@ app.get('/register', (req, res)=>{
 
 app.post('/register', async (req,res)=>{
 
+  console.log('req.body.username', req.body.username);
+  console.log('req.body.password', req.body.password);
+
+  // Define Hash password function
   async function hashPassword(password) {
     try {
       const salt = await bcrypt.genSalt(10);
@@ -158,6 +162,7 @@ app.post('/register', async (req,res)=>{
     }
   }
 
+  // Take password from req.body.password and hash it.
   const hashedPassword = await hashPassword(req.body.password)
     .then((hash) => {
       console.log('Hash:', hash);
