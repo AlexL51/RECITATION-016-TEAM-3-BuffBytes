@@ -41,6 +41,10 @@ An accessible web application for CU students. This app would replace the disarr
 
 TO BE ADDED (Useable for our demo)
 
+## Debugging Notes
+
+Access psql with `docker-compose exec db psql -U postgres -p 5431` in another terminal while `docker-compose` is running.
+
 ## Link to Deployed Application
 
 TO BE ADDED
