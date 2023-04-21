@@ -22,7 +22,7 @@ CREATE TABLE comments (
   comment_id SERIAL PRIMARY KEY,
   post_id INT NOT NULL,
   user_id INT NOT NULL,
-  chain TEXT,
+  chain TEXT, -- Will change to INT eventually, but leave for now for test cases.
   body TEXT,
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );

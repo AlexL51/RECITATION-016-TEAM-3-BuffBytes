@@ -69,7 +69,7 @@ app.get('/testDatabase', function (req, res) {
 
 // Default Endpoint
 
-app.post('/add_post', function (req, res) {
+app.post('/add_topic', function (req, res) {
   var title1 = req.body.title;
   var post1 = req.body.post;
   if (title1 != null && post1 != null){
@@ -84,7 +84,7 @@ app.post('/add_post', function (req, res) {
         res.status(201).json({
           status: 'success',
           data: data,
-          message: 'post added successfully',
+          message: 'Post Added Successfully',
         });
       })
       // if query execution fails 
@@ -99,12 +99,42 @@ app.post('/add_post', function (req, res) {
     message: "Title or Body Was Empty, Topic Not Posted",
     }); 
   }
-
-
 });
 
 
+app.post('/add_comment', function (req, res) {
+  var topic1 = req.body.post_id;
+  var chain1 = req.body.chain; //Is currently a TEXT, but will change to INT eventually
+  var comm1 = req.body.body;
+  if (topic1 != null && comm1 != null){
+    const query = `insert into comments (post_id, user_id, chain, body) values ('${topic1}','${req.session.user.user_id}', '${chain1}','${comm1}')  returning * ;`;
+    db.any(query, [
+      req.body.post_id,
+      req.body.body,
+      req.body.chain1,
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'Comment Added Successfully',
+        });
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  }
 
+  else{
+    res.render('pages/home',{
+    message: "Topic or Body Was Empty, Comment Not Posted",
+    }); 
+  }
+});
 
 
 
