@@ -119,8 +119,8 @@ app.post('/register', async (req,res)=>{
   }
 
   const hashedPassword = hashPassword(req.body.password)
-    .then((hash) => {
-      console.log('Hash:', hash);
+    .then((hashedPassword) => {
+      console.log('Hash:', hashedPassword);
     })
     .catch((error) => {
       console.error(error);
