@@ -68,6 +68,46 @@ app.get('/testDatabase', function (req, res) {
 // ****************************************************
 
 // Default Endpoint
+
+app.post('/add_post', function (req, res) {
+  var title1 = req.body.title;
+  var post1 = req.body.post;
+  if (title1 != null && post1 != null){
+    const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
+    db.any(query, [
+      req.body.title1,
+      req.body.post1,
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'post added successfully',
+        });
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  }
+
+  else{
+    res.render('pages/home',{
+    message: "Title or Body Was Empty, Topic Not Posted",
+    }); 
+  }
+
+
+});
+
+
+
+
+
+
 app.get('/', (req, res)=>{
   res.redirect('/login');
 });
