@@ -137,10 +137,8 @@ app.get('/login', (req, res)=>{
 });
 
 app.post('/login', async (req, res)=>{
-
   console.log("Login POST Request");
   console.log("req.body: ", req.body);
-  res.render('pages/login.ejs');
   const query = "SELECT * FROM users WHERE (username = $1);";
   db.any(query,[req.body.username])
   .then(async (data)=>{
@@ -161,7 +159,6 @@ app.post('/login', async (req, res)=>{
     res.render('pages/login.ejs', {message: 'Incorrect username or password.'});
   })
 });
-
 
 app.get('/register', (req, res)=>{
     res.render('pages/register.ejs');
