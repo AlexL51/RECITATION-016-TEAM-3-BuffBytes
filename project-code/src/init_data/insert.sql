@@ -16,11 +16,11 @@ insert into topics (post_id, user_id, subject, body) values (2, 5, 'Other Post',
 select setval(pg_get_serial_sequence('topics', 'post_id'), (select max(post_id) from topics)+1);
 
 
--- The chain value shows the "heritage," or chain of parents, of a certain comment. A top-level comment has a chain of '\'. A comment that replies to the comment with a comment_id of 
--- 1 will have a chain of '/1'. If that comment has a comment id of 2.
-insert into comments (comment_id, user_id, post_id, chain, body) values (1, 5, 1, '\', 'I''m pretty sure SQL will be on there.');
-insert into comments (comment_id, user_id, post_id, chain, body) values (2, 2, 1, '\1', 'no nested sql commands pls');
-insert into comments (comment_id, user_id, post_id, chain, body) values (3, 3, 1, '\1\2', 'They are not as difficult as they appear, as long as you...');
-insert into comments (comment_id, user_id, post_id, chain, body) values (4, 4, 1, '\1', 'That''s not too bad');
+-- The parent value is the comment_id of this comment's parent. A value of zero indicates that this comment has no parent and should not appear as a reply to any other comment.
+insert into comments (comment_id, user_id, post_id, chain, body) values (1, 5, 1, 0, 'I''m pretty sure SQL will be on there.');
+insert into comments (comment_id, user_id, post_id, chain, body) values (2, 2, 1, 1, 'no nested sql commands pls');
+insert into comments (comment_id, user_id, post_id, chain, body) values (3, 3, 1, 2, 'They are not as difficult as they appear, as long as you...');
+insert into comments (comment_id, user_id, post_id, chain, body) values (4, 4, 1, 1, 'That''s not too bad');
+insert into comments (comment_id, user_id, post_id, chain, body) values (5, 2, 1, 3, 'i still dont want any');
 
 select setval(pg_get_serial_sequence('comments', 'comment_id'), (select max(comment_id) from comments)+1);

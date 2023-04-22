@@ -14,6 +14,8 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
 
+var request =express();
+
 
 // *****************************************************
 // Connect to Database
@@ -96,41 +98,11 @@ app.get('/testDatabase', function (req, res) {
 
 // Default Endpoint
 
-app.post('/add_post', function (req, res) {
-  var title1 = req.body.title;
-  var post1 = req.body.post;
-  if (title1 != null && post1 != null){
-    const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
-    db.any(query, [
-      req.body.title1,
-      req.body.post1,
-    ])
-      // if query execution succeeds
-      // send success message
-      .then(function (data) {
-        res.status(201).json({
-          status: 'success',
-          data: data,
-          message: 'post added successfully',
-        });
-      })
-      // if query execution fails 
-      // send error message
-      .catch(function (err) {
-        return console.log(err);
-      });
-  }
-
-  else{
-    res.render('pages/home',{
-    message: "Title or Body Was Empty, Topic Not Posted",
-    }); 
-  }
-});
-
 app.get('/', (req, res)=>{
   res.redirect('/login');
 });
+
+// Login
 
 app.get('/login', (req, res)=>{
     res.render('pages/login.ejs');
@@ -160,10 +132,11 @@ app.post('/login', async (req, res)=>{
   })
 });
 
+// Register
+
 app.get('/register', (req, res)=>{
     res.render('pages/register.ejs');
 });
-
 
 app.post('/register', async (req,res) => {
 
@@ -208,15 +181,95 @@ app.post('/register', async (req,res) => {
     })
 });
 
+// Home
+
 app.get('/home', (req,res)=>{
     res.render('pages/home.ejs');
 });
+
+// Logout
 
 app.get('/logout', (req, res)=>{
   req.session.user = null;
   req.session.delete();
   res.render('pages/login.ejs', {message: 'logged out successfully'});
 })
+
+// Profile Page
+
+app.get('/profile', (req, res)=>{
+  // Render Profile Page
+  res.render('pages/profile.ejs');
+
+  request.post('/profile', (req, res)=>{
+
+    // Call the get req
+  
+    // Get Current User from Session
+  
+  
+  
+    // Ask database for info about the current user
+    const query = `SELECT * FROM users WHERE username = $1;`;
+  
+    // console.log("req: ", req);
+    // console.log("req.session:", req.session);
+    // console.log("req.session.user: ", req.session.user); 
+    // console.log("req.session.user.username: ", req.session.user.username);
+  
+    try {
+      db.any(query, [req.session.user.username])
+      .then(function(data) {
+          res.redirect('/login');
+      })
+      .catch(function(err){
+        console.log(err);
+        res.redirect('/home');
+      })
+    }
+    catch(err) {
+      console.log("Error.")
+      res.redirect('/home');
+    }
+  });
+
+});
+
+
+
+// Add Post
+
+app.post('/add_post', function (req, res) {
+  var title1 = req.body.title;
+  var post1 = req.body.post;
+  if (title1 != null && post1 != null){
+    const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
+    db.any(query, [
+      req.body.title1,
+      req.body.post1,
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'post added successfully',
+        });
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  }
+
+  else{
+    res.render('pages/home',{
+    message: "Title or Body Was Empty, Topic Not Posted",
+    }); 
+  }
+});
 
 // *********************************
 // Start Server
