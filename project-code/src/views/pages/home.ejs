@@ -1,38 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head> 
-  <title><%= title %></title>
-</head>
-<body>
-    <%- include ('../partials/header') %> 
-    <div class = "container">
-        <div class="row"> 
-            
-            <h4>Posts</h4>
-            < %topics.forEach(function(post) { %>
-                <div class="row">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= post.post_id</h5>
-                            <p width ="250px"
-                                white-space="nowrap" 
-                                overflow="hidden"
-                                text-overflow="ellipsis" 
-                                class="card-text"><%= post.body</p>
-                        </div>
+<%- include ('../partials/header') %> <%- include ('../partials/menu') %>
+<main> 
+    <div class = "container"> 
+        <h4>Posts</h4>
+        <% topics.forEach(function(topic) { %>
+            <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= topic.subject %></h5>
+                        <p width ="250px"
+                            white-space="nowrap" 
+                            overflow="hidden"
+                            text-overflow="ellipsis" 
+                            class="card-text"><%= topic.body %></p>
                     </div>
                 </div>
-            }); %>
-            
-
-
-        </div>
+            </div>
+        <% }); %>
     </div>
+</main>
+<%- include ('../partials/footer') %> 
 
-</body>
-
-<footer>
-    <%- include ('../partials/footer') %> 
-</footer>
-  
-</html>

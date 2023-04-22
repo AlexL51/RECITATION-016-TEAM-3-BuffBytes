@@ -138,8 +138,15 @@ app.post('/register', async (req,res)=>{
     })
 });
 
-app.get('/home', (req,res)=>{
-    res.render('pages/home.ejs');
+app.get('/home', (req, res) => {
+  db.any('SELECT * FROM topics')
+    .then((topics) => {
+      res.render('pages/home', { topics });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send('Error fetching topics');
+    });
 });
 
 app.get('/logout', (req, res)=>{
