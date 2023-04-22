@@ -1,5 +1,5 @@
 // *********************************
-// <!-- Section 1 : Dependencies-->
+// Dependencies
 // *********************************
 
 // importing the dependencies
@@ -14,15 +14,10 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
 
-// Change app settings
 
-app.set('view engine', 'ejs');
-app.use(bodyParser.json());
-
-
-// ***********************************
-// Database Initialization
-// ***********************************
+// *****************************************************
+// Connect to Database
+// *****************************************************
 
 // using bodyParser to parse JSON in the request body into JS objects
 app.use(bodyParser.json());
@@ -37,6 +32,38 @@ const dbConfig = {
 // Connect to database using the above details
 const db = pgp(dbConfig);
 
+
+// test your database
+db.connect()
+  .then(obj => {
+    console.log('Database connection successful'); // you can view this message in the docker compose logs
+    obj.done(); // success, release the connection;
+  })
+  .catch(error => {
+    console.log('ERROR:', error.message || error);
+  });
+
+// *****************************************************
+// App Settings
+// *****************************************************
+
+app.set('view engine', 'ejs'); // set the view engine to EJS
+app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
+
+// initialize session variables
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    resave: false,
+  })
+);
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 // ****************************************************
 // Test Endpoints
@@ -99,14 +126,7 @@ app.post('/add_post', function (req, res) {
     message: "Title or Body Was Empty, Topic Not Posted",
     }); 
   }
-
-
 });
-
-
-
-
-
 
 app.get('/', (req, res)=>{
   res.redirect('/login');
@@ -117,6 +137,9 @@ app.get('/login', (req, res)=>{
 });
 
 app.post('/login', async (req, res)=>{
+
+  console.log("Login POST Request");
+  console.log("req.body: ", req.body);
   res.render('pages/login.ejs');
   const query = "SELECT * FROM users WHERE (username = $1);";
   db.any(query,[req.body.username])
@@ -147,7 +170,6 @@ app.get('/register', (req, res)=>{
 
 app.post('/register', async (req,res) => {
 
-  console.log('req: ', req);
   console.log('req.body: ', req.body);
 
   console.log('req.body.username', req.body.username);
