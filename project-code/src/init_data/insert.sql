@@ -23,4 +23,4 @@ insert into comments (comment_id, user_id, post_id, chain, body) values (2, 2, 1
 insert into comments (comment_id, user_id, post_id, chain, body) values (3, 3, 1, '\1\2', 'They are not as difficult as they appear, as long as you...');
 insert into comments (comment_id, user_id, post_id, chain, body) values (4, 4, 1, '\1', 'That''s not too bad');
 
-select setval(pg_get_serial_sequence('comments', 'comment_id'), (select max(comment_id) from )+1);
+select setval(pg_get_serial_sequence('comments', 'comment_id'), (select max(comment_id) from comments)+1);

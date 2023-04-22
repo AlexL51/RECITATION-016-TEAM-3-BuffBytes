@@ -145,10 +145,14 @@ app.get('/register', (req, res)=>{
 });
 
 
-app.post('/register', async (req,res)=>{
+app.post('/register', async (req,res) => {
+
+  console.log('req: ', req);
+  console.log('req.body: ', req.body);
 
   console.log('req.body.username', req.body.username);
   console.log('req.body.password', req.body.password);
+
 
   // Define Hash password function
   async function hashPassword(password) {
