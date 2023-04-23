@@ -114,7 +114,7 @@ app.post('/login', async (req, res)=>{
   const query = "SELECT * FROM users WHERE (username = $1);";
   db.any(query,[req.body.username])
   .then(async (data)=>{
-    const user = data;
+    const user = data[0];
     console.log(data);
     const match = await bcrypt.compare(req.body.password, data[0].password);
     if(match){
@@ -197,28 +197,25 @@ app.get('/logout', (req, res)=>{
 
 // Profile Page
 app.get('/profile', (req, res)=>{
+  console.log("Profile GET request");
+ 
   // If the user isn't logged in, redirect to the login page.
-  if (req.session.user.username === null) {
+  if (req.session.user === null) {
     res.render('pages/login.ejs');
   };
+  
   // Ask database for info about the current user
   const query = `SELECT * FROM users WHERE username = $1;`;
-
-  try {
-    db.any(query, [req.session.user.username])
-    .then(function(data) {
-      console.log(data);
-      res.render('pages/profile.ejs', data);
-    })
-    .catch(function(err){
-      console.log(err);
-      res.redirect('/home');
-    })
-  }
-  catch(err) {
-    console.log("Error.")
+  db.any(query, req.session.user.username)
+  .then(queryResult => {
+    res.render('pages/profile.ejs', {
+      currUser: queryResult[0],
+    });
+  })
+  .catch(function (err) {
+    console.log(err);
     res.redirect('/home');
-  }
+  });
   });
 
 

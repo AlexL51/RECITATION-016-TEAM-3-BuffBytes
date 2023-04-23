@@ -1,25 +1,13 @@
-<!-- Main HTML Code -->
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
 
-<% /*- include ('../partials/header') */  %> 
-
-
+<!-- Still needs to be beautified and later make sure the api call is correct once backend is done-->
 <main>
-  <div class="container">
-    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
-    <h1>Profile</h1>
-        <tbody>
-            <p class="card-text"> Username: <%= user  %> </p>
-            <tr>
-              <div>
-                <!-- <p class="card-text"> User ID: <% /*= user.user_id */  %> </p>
-                <p class="card-text"> Username: <% /*= user.username */  %> </p>
-                <p class="card-text"> Profile Image: <% /*= user.profile_image */  %> </p>
-                <p class="card-text"> Description: <% /*= user.description */  %> </p> -->
-              </div>
-            </tr>
-          <!-- <% /* }); */ %> -->
-        </tbody>
-  </div>
-</main>
-
-<% /*- include ('../partials/footer') */  %>
+    <div class="container">
+      <br><br>
+        <h1>Profile</h1>
+        <td>CurrUser: <% currUser %></td>
+    
+    </div>
+  </main>
+  
