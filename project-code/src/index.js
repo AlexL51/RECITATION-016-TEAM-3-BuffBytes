@@ -196,45 +196,30 @@ app.get('/logout', (req, res)=>{
 })
 
 // Profile Page
-
 app.get('/profile', (req, res)=>{
-  // Render Profile Page
-  res.render('pages/profile.ejs');
+  // If the user isn't logged in, redirect to the login page.
+  if (req.session.user.username === null) {
+    res.render('pages/login.ejs');
+  };
+  // Ask database for info about the current user
+  const query = `SELECT * FROM users WHERE username = $1;`;
 
-  request.post('/profile', (req, res)=>{
-
-    // Call the get req
-  
-    // Get Current User from Session
-  
-  
-  
-    // Ask database for info about the current user
-    const query = `SELECT * FROM users WHERE username = $1;`;
-  
-    // console.log("req: ", req);
-    // console.log("req.session:", req.session);
-    // console.log("req.session.user: ", req.session.user); 
-    // console.log("req.session.user.username: ", req.session.user.username);
-  
-    try {
-      db.any(query, [req.session.user.username])
-      .then(function(data) {
-          res.redirect('/login');
-      })
-      .catch(function(err){
-        console.log(err);
-        res.redirect('/home');
-      })
-    }
-    catch(err) {
-      console.log("Error.")
+  try {
+    db.any(query, [req.session.user.username])
+    .then(function(data) {
+      console.log(data);
+      res.render('pages/profile.ejs', data);
+    })
+    .catch(function(err){
+      console.log(err);
       res.redirect('/home');
-    }
+    })
+  }
+  catch(err) {
+    console.log("Error.")
+    res.redirect('/home');
+  }
   });
-
-});
-
 
 
 // Add Post
