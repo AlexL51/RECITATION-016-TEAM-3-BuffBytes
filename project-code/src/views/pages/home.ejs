@@ -1,22 +1,29 @@
 <%- include ('../partials/header') %> <%- include ('../partials/menu') %>
 <main> 
     <div class = "container"> 
+        <br>
         <h4>Posts</h4>
+        <br>
         <% topics.forEach(function(topic) { %>
             <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= topic.subject %></h5>
-                        <p width ="250px"
-                            white-space="nowrap" 
-                            overflow="hidden"
-                            text-overflow="ellipsis" 
-                            class="card-text"><%= topic.body %></p>
+                <div class="card row-hover pos-relative py-1 px-3 mb-3 border border-top-0 border-right-1 border-bottom-0 rounded-0">
+                    <div class="row align-items-center">
+                        <div class="col-md-12 mb-4 mb-sm-0">
+                            <h5 class="text-black"><%= topic.subject %></h5>
+                            <p class="text-sm">
+                                <span class="op-6">Posted by</span>
+                                <a class="text-black" href="#"><%= topic.user_id %></a>
+                            </p>
+                            <div class="text-sm op-5"> 
+                                <a class="text-black mr-2"><%= topic.body %></a> 
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
+            <br>
         <% }); %>
     </div>
 </main>
 <%- include ('../partials/footer') %> 
-

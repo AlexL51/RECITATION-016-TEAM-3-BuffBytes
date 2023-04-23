@@ -141,7 +141,9 @@ app.post('/register', async (req,res)=>{
 app.get('/home', (req, res) => {
   db.any('SELECT * FROM topics')
     .then((topics) => {
-      res.render('pages/home', { topics });
+      res.render('pages/home', { 
+        topics: topics
+        });
     })
     .catch((error) => {
       console.log(error);

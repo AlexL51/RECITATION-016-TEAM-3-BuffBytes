@@ -1,0 +1,42 @@
+<%- include ('../partials/header') %> <%- include ('../partials/menu') %>
+<main>
+    <div class = "container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row">
+                    <img src="<%= user.profile_image %>" alt="<%= user.username %>'s Profile Picture">
+                    <h1><%= user.username %></h1>
+                </div>
+                <br> 
+                <div class = "row"> 
+                    <p><%= user.description %</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class = "row"> 
+                    <h3>Posts</h3>
+                </div>
+                <br> 
+                <% posts.forEach(function(post) { %> 
+                    <div class = "row">
+                        <div class = "card"> 
+                            <div class="card-body">
+                                <h5 class="card-title"><%= post.subject %></h5>
+                                <p width ="250px"
+                                    white-space="nowrap" 
+                                    overflow="hidden"
+                                    text-overflow="ellipsis" 
+                                    class="card-text"><%= post.body %></p>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include ('../partials/footer') %> 
+
+
+
