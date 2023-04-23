@@ -1,10 +1,21 @@
 -- Use '' to escape apostraphes in strings.
 
-insert into users (user_id, username, profile_image, password, description) values (1, 'collisteru', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'colliPass', 'this person prefers to maintain an air of mystery about them.');
-insert into users (user_id, username, profile_image, password, description) values (2, 'bank', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'testPass', 'a description of bank');
-insert into users (user_id, username, profile_image, password, description) values (3, 'dijkstra','https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'testPass', 'a description of dijstra');
-insert into users (user_id, username, profile_image, password, description) values (4, 'lovelace', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'testPass', 'a description of lovelace');
-insert into users (user_id, username, profile_image, password, description) values (5, 'allen', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', 'testPass', 'a description of allen');
+-- Unhashed password: colliPass
+insert into users (user_id, username, profile_image, password, description) values (1, 'collisteru', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', '$2b$10$G1OuLyLCCr8rAL5Hw1w/nuiF3dtpjgIi.J0egQwknpCSDRr/bCGpe', 'this person prefers to maintain an air of mystery about them.');
+
+-- Unhashed password: bankPass
+insert into users (user_id, username, profile_image, password, description) values (2, 'bank', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', '$2b$10$9tXT6/hXOOry6dCsdVu8Ju3NXp0tWirnasSvP7o66gFfwe8rLVpK2', 'a description of bank');
+
+-- Unhashed password: dijkstraPass
+insert into users (user_id, username, profile_image, password, description) values (3, 'dijkstra','https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', '$2b$10$4GhtDPsSyU1Nx80S.K8JS.7di3ypSdRz/ao9zKJqnyia3pT3p0hjm', 'a description of dijkstra');
+
+-- Unhashed password: lovelacePass
+insert into users (user_id, username, profile_image, password, description) values (4, 'lovelace', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', '$2b$10$.JCoRSbRO5zGicQ5atRmPOLt0aiskI1RPMdBuwUZAgk7M5Nl1TNcK', 'a description of lovelace');
+
+-- Unhashed password: allenPass
+insert into users (user_id, username, profile_image, password, description) values (5, 'allen', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', '$2b$10$U4y8Ta6yJxM5JEvvQsouhu6.XR/jkJ0ZKmVI8UMkt6Shf.hJag80e', 'a description of allen');
+
+
 
 -- VERY IMPORTANT LINE: This resets the next serial in the users table to the actual next number in the sequence, since they are misaligned by default due to the bulk insert.
 -- (Weird bug)
