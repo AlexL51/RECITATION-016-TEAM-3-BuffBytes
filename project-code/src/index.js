@@ -139,7 +139,8 @@ app.post('/register', async (req,res)=>{
 });
 
 app.get('/home', (req, res) => {
-  db.any('SELECT * FROM topics')
+  const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
+  db.any(query)
     .then((topics) => {
       res.render('pages/home', { 
         topics: topics
