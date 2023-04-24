@@ -1,25 +1,42 @@
 <%- include ('../partials/header') %> <%- include ('../partials/menu') %>
-<main> 
+
+<main>
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
     <div class = "container"> 
         <br>
-        <h4>Posts</h4>
+        <h3>BuffHeard</h3>
         <br>
         <% topics.forEach(function(topic) { %>
-            <div class="row">
-                <div class="card row-hover pos-relative py-1 px-3 mb-3 border border-top-0 border-right-1 border-bottom-0 rounded-0">
-                    <div class="row align-items-center">
-                        <div class="col-md-12 mb-4 mb-sm-0">
-                            <h5 class="text-black"><%= topic.subject %></h5>
-                            <p class="text-sm">
-                                <span class="op-6">Posted by</span>
-                                <a class="text-black" href="#"><%= topic.user_id %></a>
-                            </p>
-                            <div class="text-sm op-5"> 
-                                <a class="text-black mr-2"><%= topic.body %></a> 
+            <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="text-black"><%= topic.subject %></h5>
+                        <p class="text-sm">
+                            <span class="op-6">Posted by</span>
+                            <!--Need to add link to user page
+                                and show username not id-->
+                            <a class="text-black" href="#">
+                                <%= topic.user_id %>
+                            </a>
+                        </p>
+                        <!--This div is for the post body
+                            I have to implement a max display length
+                            and a '...' button to continue reading.-->
+                        <div class="text-sm op-5"> 
+                            <a class="text-black mr-2"><%= topic.body %></a> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row text-center op-7">
+                            <div class="col px-1">
+                                <i class="ion-ios-chatboxes-outline icon-1x"></i> 
+                                <!--Need to add comments to the topics database-->
+                                <span class="d-block text-sm">47</span> 
                             </div>
                         </div>
-                        
                     </div>
+                    
                 </div>
             </div>
             <br>
