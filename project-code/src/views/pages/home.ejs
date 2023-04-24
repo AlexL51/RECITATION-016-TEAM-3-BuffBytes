@@ -6,7 +6,7 @@
         <h3>BuffHeard</h3>
         <br>
         <% topics.forEach(function(topic) { %>
-            <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+            <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1">
                 <div class="row align-items-center">
                     <div class="col-md-8">
                         <h5 class="text-black"><%= topic.subject %></h5>
@@ -22,7 +22,12 @@
                             I have to implement a max display length
                             and a '...' button to continue reading.-->
                         <div class="text-sm op-5"> 
-                            <a class="text-black mr-2"><%= topic.body %></a> 
+                            <% if (topic.body.length > 97) { %>
+                                <span style="display: inline"><%= topic.body.substring(0, 97) %></span>
+                                <a href="#" style="display: inline">...</a>       
+                            <% } else { %>
+                                <a class="text-black mr-2"><%= topic.body %></a>
+                            <% } %>
                         </div>
                     </div>
                     <div class="col-md-4">

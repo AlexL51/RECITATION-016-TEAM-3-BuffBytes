@@ -8,7 +8,6 @@ insert into users (user_id, username, profile_image, password, description) valu
 
 insert into topics (post_id, user_id, subject, body) values (1, 3, 'Test Post', 'What will be on the test?');
 insert into topics (post_id, user_id, subject, body) values (2, 5, 'Other Post', 'Nothing is complete without a second example');
-insert into topics (post_id, user_id, subject, body) values (3, 1, 'A long post', 'This is a test post to see how much text I should display and how much I should hide. I repeat, this is a test post to see how much text I should display and how much I should hide');
 
 insert into comments (comment_id, user_id, post_id, chain, body) values (1, 5, 1, '\', 'I''m pretty sure SQL will be on there.');
 insert into comments (comment_id, user_id, post_id, chain, body) values (2, 2, 1, '\1', 'no nested sql commands pls');
