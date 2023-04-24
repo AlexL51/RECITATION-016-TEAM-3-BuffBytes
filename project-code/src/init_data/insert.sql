@@ -1,7 +1,7 @@
 -- Use '' to escape apostraphes in strings.
 
 -- Unhashed password: colliPass
-insert into users (user_id, username, profile_image, password, description) values (1, 'collisteru', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', '$2b$10$G1OuLyLCCr8rAL5Hw1w/nuiF3dtpjgIi.J0egQwknpCSDRr/bCGpe', 'this person prefers to maintain an air of mystery about them.');
+insert into users (user_id, username, profile_image, password, description) values (1, 'collisteru', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', '$2b$10$G1OuLyLCCr8rAL5Hw1w/nuiF3dtpjgIi.J0egQwknpCSDRr/bCGpe', 'A description of Collisteru');
 
 -- Unhashed password: bankPass
 insert into users (user_id, username, profile_image, password, description) values (2, 'bank', 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', '$2b$10$9tXT6/hXOOry6dCsdVu8Ju3NXp0tWirnasSvP7o66gFfwe8rLVpK2', 'a description of bank');
