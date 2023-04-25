@@ -181,7 +181,6 @@ app.post('/register', async (req,res) => {
     })
 });
 
-
 app.get('/home', (req, res) => {
   const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
   db.any(query)
@@ -197,7 +196,6 @@ app.get('/home', (req, res) => {
 });
 
 // Logout
-
 app.get('/logout', (req, res)=>{
   req.session.user = null;
   req.session.delete();
@@ -225,7 +223,7 @@ app.get('/profile', (req, res)=>{
     console.log(err);
     res.redirect('/home');
   });
-  });
+});
 
 
 // Add Post
