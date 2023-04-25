@@ -14,6 +14,8 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
 
+var request =express();
+
 
 // *****************************************************
 // Connect to Database
@@ -96,41 +98,11 @@ app.get('/testDatabase', function (req, res) {
 
 // Default Endpoint
 
-app.post('/add_post', function (req, res) {
-  var title1 = req.body.title;
-  var post1 = req.body.post;
-  if (title1 != null && post1 != null){
-    const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
-    db.any(query, [
-      req.body.title1,
-      req.body.post1,
-    ])
-      // if query execution succeeds
-      // send success message
-      .then(function (data) {
-        res.status(201).json({
-          status: 'success',
-          data: data,
-          message: 'post added successfully',
-        });
-      })
-      // if query execution fails 
-      // send error message
-      .catch(function (err) {
-        return console.log(err);
-      });
-  }
-
-  else{
-    res.render('pages/home',{
-    message: "Title or Body Was Empty, Topic Not Posted",
-    }); 
-  }
-});
-
 app.get('/', (req, res)=>{
   res.redirect('/login');
 });
+
+// Login
 
 app.get('/login', (req, res)=>{
     res.render('pages/login.ejs');
@@ -142,7 +114,7 @@ app.post('/login', async (req, res)=>{
   const query = "SELECT * FROM users WHERE (username = $1);";
   db.any(query,[req.body.username])
   .then(async (data)=>{
-    const user = data;
+    const user = data[0];
     console.log(data);
     const match = await bcrypt.compare(req.body.password, data[0].password);
     if(match){
@@ -160,10 +132,11 @@ app.post('/login', async (req, res)=>{
   })
 });
 
+// Register
+
 app.get('/register', (req, res)=>{
     res.render('pages/register.ejs');
 });
-
 
 app.post('/register', async (req,res) => {
 
@@ -208,6 +181,7 @@ app.post('/register', async (req,res) => {
     })
 });
 
+
 app.get('/home', (req, res) => {
   const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
   db.any(query)
@@ -222,11 +196,71 @@ app.get('/home', (req, res) => {
     });
 });
 
+// Logout
+
 app.get('/logout', (req, res)=>{
   req.session.user = null;
   req.session.delete();
   res.render('pages/login.ejs', {message: 'logged out successfully'});
 })
+
+// Profile Page
+app.get('/profile', (req, res)=>{
+  console.log("Profile GET request");
+ 
+  // If the user isn't logged in, redirect to the login page.
+  if (req.session.user === null) {
+    res.render('pages/login.ejs');
+  };
+  
+  // Ask database for info about the current user
+  const query = `SELECT * FROM users WHERE username = $1;`;
+  db.any(query, req.session.user.username)
+  .then(queryResult => {
+    res.render('pages/profile.ejs', {
+      currUser: queryResult[0],
+    });
+  })
+  .catch(function (err) {
+    console.log(err);
+    res.redirect('/home');
+  });
+  });
+
+
+// Add Post
+
+app.post('/add_post', function (req, res) {
+  var title1 = req.body.title;
+  var post1 = req.body.post;
+  if (title1 != null && post1 != null){
+    const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
+    db.any(query, [
+      req.body.title1,
+      req.body.post1,
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'post added successfully',
+        });
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  }
+
+  else{
+    res.render('pages/home',{
+    message: "Title or Body Was Empty, Topic Not Posted",
+    }); 
+  }
+});
 
 // *********************************
 // Start Server

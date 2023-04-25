@@ -1,0 +1,17 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<!-- Still needs to be beautified and later make sure the api call is correct once backend is done-->
+<main>
+    <div class="container">
+      <br><br>
+        <h1>User: <%- currUser.username %></h1>
+        <div class="d-flex justify-content-between">
+          <span><img src=<%= currUser.profile_image %> width="300" height="300" class="img-thumbnail" alt="Profile picture for <%- currUser.username %>"></span>
+        </div>
+        <body>
+          <%= currUser.description %>
+        </body>
+        <!-- Ask for username, profile image, and description.-->
+    </div>
+  </main>
