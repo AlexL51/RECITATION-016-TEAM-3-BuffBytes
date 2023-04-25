@@ -1,17 +1,29 @@
-<%- include ('../partials/header') %>
+<%- include ('../partials/header') %> 
 <%- include ('../partials/menu') %>
-
-<!-- Still needs to be beautified and later make sure the api call is correct once backend is done-->
 <main>
-    <div class="container">
-      <br><br>
-        <h1>User: <%- currUser.username %></h1>
-        <div class="d-flex justify-content-between">
-          <span><img src=<%= currUser.profile_image %> width="300" height="300" class="img-thumbnail" alt="Profile picture for <%- currUser.username %>"></span>
+  <div class="container bg-light">
+    <br>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card mb-4 mb-xl-0">
+          <div class="card-body text-center">
+              <!-- Profile picture image-->
+              <img class="img-account-profile rounded-circle mb-2" src="<%= currUser.profile_image %>" alt="">
+              <h4 class="text-black"><%= currUser.username %></h4>
+              <a class="text-black mr-2"><%= currUser.description %></a>
+          </div>
         </div>
-        <body>
-          <%= currUser.description %>
-        </body>
-        <!-- Ask for username, profile image, and description.-->
+      </div>
+      <div class="col-md-8">
+        <div class ="card mb-4">
+          <div class="card-body">
+            <h4 class="text-black">Posts</h4>
+            <br>
+            <!--For loop to display posts made by the current user-->
+          </div>
+        </div>
+      </div>
     </div>
-  </main>
+  </div>
+</main>
+<%- include ('../partials/footer') %> 
