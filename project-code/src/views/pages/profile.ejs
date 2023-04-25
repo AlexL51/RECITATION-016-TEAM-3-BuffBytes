@@ -1,0 +1,39 @@
+<%- include ('../partials/header') %> 
+<%- include ('../partials/menu') %>
+<main>
+  <div class="container bg-light">
+    <br>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card mb-4 mb-xl-0">
+          <div class="card-body">
+            <div class="text-center">
+              <!-- Profile picture image-->
+              <img class="img-account-profile rounded-circle mb-2" 
+                   src="<%= currUser.profile_image %>" 
+                   width="200"
+                   height="200"
+                   alt="">
+              <br><br>
+              <h4 class="text-black"><%= currUser.username %></h4>
+              <br>
+            </div>
+            <div class="text-left">
+              <a class="text-black mr-2"><%= currUser.description %></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class ="card mb-4">
+          <div class="card-body">
+            <h4 class="text-black">Posts</h4>
+            <br>
+            <!--For loop to display posts made by the current user-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<%- include ('../partials/footer') %> 
