@@ -181,7 +181,6 @@ app.post('/register', async (req,res) => {
     })
 });
 
-
 app.get('/home', (req, res) => {
   const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
   db.any(query)
@@ -197,7 +196,6 @@ app.get('/home', (req, res) => {
 });
 
 // Logout
-
 app.get('/logout', (req, res)=>{
   req.session.user = null;
   req.session.delete();
@@ -264,7 +262,7 @@ app.get('/new_post_page', (req, res)=>{
     console.log(err);
     res.redirect('/home');
   });
-  });
+});
 
 
 // Add Post
@@ -301,6 +299,28 @@ app.post('/add_post', function (req, res) {
   }
 });
 
+
+app.get('/comments', (req, res)=>{
+  console.log(req.body);
+  const query = "SELECT * FROM topics WHERE post_id = 1;";
+  db.any(query, [req.body.post_id])
+  .then(function(data){
+    const query2 = "SELECT * FROM comments WHERE post_id = 1 ORDER BY comment_id;";
+    console.log(data);
+    db.any(query2, [req.body.post_id])
+    .then(function(data1){
+      console.log(data1);
+      res.render('pages/post.ejs', {topic: data[0], 
+                                    comments: data1,});
+    })
+    .catch(function(err){
+      console.log(err);
+    });
+  })
+  .catch(function(err){
+    console.log(err);
+  });
+});
 // *********************************
 // Start Server
 // *********************************
