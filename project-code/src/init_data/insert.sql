@@ -22,7 +22,7 @@ insert into users (user_id, username, profile_image, password, description) valu
 select setval(pg_get_serial_sequence('users', 'user_id'), (select max(user_id) from users)+1);
 
 insert into topics (post_id, user_id, subject, body) values (1, 3, 'Test Post', 'What will be on the test?');
-insert into topics (post_id, user_id, subject, body) values (2, 5, 'Other Post', 'Nothing is complete without a second example.');
+insert into topics (post_id, user_id, subject, body) values (2, 5, 'Other Post', 'Nothing is complete without a second example');
 
 select setval(pg_get_serial_sequence('topics', 'post_id'), (select max(post_id) from topics)+1);
 
