@@ -181,12 +181,7 @@ app.post('/register', async (req,res) => {
     })
 });
 
-<<<<<<< HEAD
-// Home
 
-app.get('/home', (req,res)=>{
-    res.render('pages/home.ejs');
-=======
 app.get('/home', (req, res) => {
   const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
   db.any(query)
@@ -199,7 +194,6 @@ app.get('/home', (req, res) => {
       console.log(error);
       res.send('Error fetching topics');
     });
->>>>>>> ea9ad0f67ce84bb0814ffb5fdac234885e44098b
 });
 
 // Logout
