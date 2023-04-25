@@ -208,8 +208,18 @@ app.post('/register', async (req,res) => {
     })
 });
 
-app.get('/home', (req,res)=>{
-    res.render('pages/home.ejs');
+app.get('/home', (req, res) => {
+  const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
+  db.any(query)
+    .then((topics) => {
+      res.render('pages/home', { 
+        topics: topics
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send('Error fetching topics');
+    });
 });
 
 app.get('/logout', (req, res)=>{
