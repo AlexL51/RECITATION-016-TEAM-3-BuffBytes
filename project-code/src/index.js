@@ -215,7 +215,46 @@ app.get('/profile', (req, res)=>{
   
   // Ask database for info about the current user
   const query = `SELECT * FROM users WHERE username = $1;`;
-  db.any(query, req.session.user.username)
+  try {
+    var username = req.session.user.username;
+  }
+  catch(err) {
+    console.log(err);
+    res.redirect('/home');
+  }
+  db.any(query, username)
+  .then(queryResult => {
+    res.render('pages/profile.ejs', {
+      currUser: queryResult[0],
+    });
+  })
+  .catch(function (err) {
+    console.log(err);
+    res.redirect('/home');
+  });
+  });
+
+
+// New Post Page
+
+app.get('/new_post_page', (req, res)=>{
+  console.log("New post page request");
+  res.render('pages/new_post_page.ejs');
+ 
+  // If the user isn't logged in, redirect to the login page.
+  if (req.session.user === null) {
+    res.render('pages/login.ejs');
+  };
+  
+  // Ask database for info about the current user
+  try {
+    var username = req.session.user.username;
+  }
+  catch(err) {
+    console.log(err);
+    res.redirect('/home');
+  }
+  db.any(query, username)
   .then(queryResult => {
     res.render('pages/profile.ejs', {
       currUser: queryResult[0],
