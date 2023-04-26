@@ -3,7 +3,7 @@
 <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 <main>
   <div class="vh-100" style="background-color: #CFB87C;">
-    <div class="container bg-light">
+    <div class="container">
       <br>
       <div class="row">
         <div class="col-md-4">
@@ -30,12 +30,12 @@
           <div class ="card mb-4">
             <div class="card-body">
               <h4 class="text-black">Posts</h4>
-              <br>
               <% if (userTopics.length === 0) { %> 
                 <p class="text-black">No posts yet</p>
               <% } else { %>
                 <% userTopics.forEach(function(topic) { %>
-                  <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1">
+                  <br>
+                  <div class="card row-hover pos-relative py-1 px-2 mb-1 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1">
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <h5 class="text-black"><%= topic.subject %></h5>
@@ -46,9 +46,9 @@
                                 </a>
                             </p>
                             <div class="text-sm op-5"> 
-                                <% if (topic.body.length > 97) { %>
-                                    <span style="display: inline"><%= topic.body.substring(0, 97) %></span>
-                                    <a href="#" style="display: inline">...</a>       
+                                <% if (topic.body.length > 54) { %>
+                                    <span style="display: inline"><%= topic.body.substring(0, 54) %></span>
+                                    <a href="/comments/<%=topic.post_id%>" style="display: inline">...</a>       
                                 <% } else { %>
                                     <a class="text-black mr-2"><%= topic.body %></a>
                                 <% } %>
@@ -58,7 +58,7 @@
                             <div class="row text-center op-7">
                                 <div class="col px-1">
                                     <i class="ion-ios-chatboxes-outline icon-1x"></i> 
-                                    <a class="d-block text-sm" href="/comments/<%=topic.post_id%>">47 replies</a> 
+                                    <a class="d-block text-sm" href="/comments/<%=topic.post_id%>">replies</a> 
                                 </div>
                             </div>
                         </div>
