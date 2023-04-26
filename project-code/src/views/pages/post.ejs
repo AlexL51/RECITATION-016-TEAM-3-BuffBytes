@@ -18,8 +18,9 @@
                         height="20"
                         alt="">
                         <!--still need to include path to view profile-->
-                        <a href="#" style="padding-left:10px"><%= users[comment.user_id - 1].username %><a>
-                        <div class="text-sm op-6" style="padding-left:50px;"><%= comment.body %></div>
+                        <a href="#" style="padding-left:10px"><%= users[comment.user_id - 1].username %></a>
+                        <div class="text-sm op-6">:</div>
+                        <div class="text-sm op-6" style="padding-left:10px;"><%= comment.body %></div>
                     </div>
                 </div>
             <% } else { %>
@@ -32,7 +33,9 @@
                         alt="">
                         <!--still need to include path to view profile-->
                         <a href="#" style="padding-left:10px"><%= users[comment.user_id - 1].username %><a>
-                        <div class="text-sm op-6" style="padding-left:50px;"><%= comment.body %></div>
+                        <div class="text-sm op-6">:</div>
+                        <a href="#" style="padding-left:5px">@<%= users[comments[comment.chain - 1].user_id - 1].username %></a>
+                        <div class="text-sm op-6" style="padding-left:5px;"><%= comment.body %></div>
                     </div>
                 </div>
             <% } %>

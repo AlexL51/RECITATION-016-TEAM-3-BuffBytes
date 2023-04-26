@@ -316,7 +316,7 @@ app.get('/comments/:post_id', (req, res)=>{
   const query = "SELECT * FROM topics WHERE post_id = $1;";
   db.any(query, [req.params.post_id])
   .then(function(data){
-    const query2 = "SELECT * FROM comments WHERE post_id = $1 ORDER BY comment_id, chain;";
+    const query2 = "SELECT * FROM comments WHERE post_id = $1 ORDER BY comment_id;";
     console.log(data);
     db.any(query2, [req.params.post_id])
     .then(function(data1){
