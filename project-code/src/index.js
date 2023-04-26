@@ -209,10 +209,12 @@ app.get('/profile', (req, res)=>{
   // If the user isn't logged in, redirect to the login page.
   if (req.session.user === null) {
     res.render('pages/login.ejs');
+    return;
   };
   
   // Ask database for info about the current user
-  const query = `SELECT * FROM users WHERE username = $1;`;
+  const userQuery = `SELECT * FROM users WHERE username = $1;`;
+  const topicQuery = 'SELECT * FROM topics WHERE user_id = $1 ORDER BY post_id DESC;';
   try {
     var username = req.session.user.username;
   }
@@ -220,17 +222,26 @@ app.get('/profile', (req, res)=>{
     console.log(err);
     res.redirect('/home');
   }
-  db.any(query, username)
-  .then(queryResult => {
-    res.render('pages/profile.ejs', {
-      currUser: queryResult[0],
+  
+  db.task('get-profile', async function (t) { 
+    const user = await t.oneOrNone(userQuery, username); 
+    if(!user) { 
+      throw new Error('User not found');
+    }
+    const topics = await t.any(topicQuery, user.user_id); 
+    return { user, topics }; 
+  })
+  .then(({user, topics}) => { 
+    res.render('pages/profile.ejs', { 
+      currUser: user, 
+      userTopics: topics
     });
   })
   .catch(function (err) {
     console.log(err);
     res.redirect('/home');
   });
-  });
+});
 
 
 // New Post Page
