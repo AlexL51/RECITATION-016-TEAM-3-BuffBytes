@@ -305,13 +305,22 @@ app.get('/comments/:post_id', (req, res)=>{
   const query = "SELECT * FROM topics WHERE post_id = $1;";
   db.any(query, [req.params.post_id])
   .then(function(data){
-    const query2 = "SELECT * FROM comments WHERE post_id = $1 ORDER BY comment_id;";
+    const query2 = "SELECT * FROM comments WHERE post_id = $1 ORDER BY comment_id, chain;";
     console.log(data);
     db.any(query2, [req.params.post_id])
     .then(function(data1){
       console.log(data1);
-      res.render('pages/post.ejs', {topic: data[0], 
-                                    comments: data1,});
+      const query3 = "SELECT * FROM users ORDER BY user_id;";
+      db.any(query3)
+      .then(function(data2){
+        res.render('pages/post.ejs', {topic: data[0], 
+                                    comments: data1,
+                                    users: data2,});
+      })
+      .catch(function(err){
+        console.log(err);
+      })
+        
     })
     .catch(function(err){
       console.log(err);
