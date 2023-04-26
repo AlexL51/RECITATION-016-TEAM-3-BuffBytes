@@ -39,12 +39,6 @@
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <h5 class="text-black"><%= topic.subject %></h5>
-                            <p class="text-sm">
-                                <span class="op-6">Posted by</span>
-                                <a class="text-black" href="#">
-                                    <%= topic.username %>
-                                </a>
-                            </p>
                             <div class="text-sm op-5"> 
                                 <% if (topic.body.length > 54) { %>
                                     <span style="display: inline"><%= topic.body.substring(0, 54) %></span>
