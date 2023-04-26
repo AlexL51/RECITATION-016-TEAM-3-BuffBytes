@@ -1,0 +1,26 @@
+<%- include ('../partials/header') %> 
+<%- include ('../partials/menu') %>
+<main>
+    <div class="vh-100" style="background-color: #CFB87C;">
+    <div class = "container bg-light" style="padding-top:50px; padding-bottom:50px;">
+        <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1">    
+            <h5 class="text-black" style="font-size:30px;"><%= topic.subject %></h5>
+            <div class="text-sm op-5" style="font-size:20px;"><%= topic.body %></div>
+        </div>
+        <h5 style="padding-left:30px;">Comments:</h5>
+        <% comments.forEach(function(comment){ %>
+            <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1" style="margin-left:20px">
+                <div class="row">
+                    <a href="#" style="padding-left:10px"><%= comment.user_id %><a>
+                    <div class="text-sm op-6" style="padding-left:50px;"><%= comment.body %></div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+    </div>
+</main>
+
+
+
+
+<%- include ('../partials/footer') %> 
