@@ -113,7 +113,7 @@ app.post('/login', async (req, res)=>{
   console.log("req.body: ", req.body);
   const query = "SELECT * FROM users WHERE (username = $1);";
   db.any(query,[req.body.username])
-  .then(async (data)=>{
+  .then(async (data)=>{ 
     const user = data[0];
     console.log(data);
     const match = await bcrypt.compare(req.body.password, data[0].password);
@@ -141,7 +141,6 @@ app.get('/register', (req, res)=>{
 app.post('/register', async (req,res) => {
 
   console.log('req.body: ', req.body);
-
   console.log('req.body.username', req.body.username);
   console.log('req.body.password', req.body.password);
 
@@ -227,6 +226,16 @@ app.get('/profile', (req, res)=>{
   });
   });
 
+// New Post Page
+
+app.get('/add_post', (req, res) => {
+  console.log("req.session.user: ", req.session.user);
+  console.log("req.session.user[0]: ", req.session.user[0]);
+
+  res.render('pages/new_post_page.ejs', {
+    currUser: req.session.user,
+  });
+});
 
 // Add Post
 
@@ -253,9 +262,7 @@ app.post('/add_post', function (req, res) {
       .catch(function (err) {
         return console.log(err);
       });
-  }
-
-  else{
+  } else {
     res.render('pages/home',{
     message: "Title or Body Was Empty, Topic Not Posted",
     }); 
