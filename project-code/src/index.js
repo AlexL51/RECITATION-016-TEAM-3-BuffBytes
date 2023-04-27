@@ -98,6 +98,75 @@ app.get('/testDatabase', function (req, res) {
 
 // Default Endpoint
 
+app.post('/add_topic', function (req, res) {
+  var title1 = req.body.title;
+  var post1 = req.body.post;
+  if (title1 != null && post1 != null){
+    const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
+    db.any(query, [
+      req.body.title1,
+      req.body.post1,
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'Post Added Successfully',
+        });
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  }
+
+  else{
+    res.render('pages/home',{
+    message: "Title or Body Was Empty, Topic Not Posted",
+    }); 
+  }
+});
+
+
+app.post('/add_comment', function (req, res) {
+  var topic1 = req.body.post_id;
+  //var chain1 = req.body.chain; Is currently a INT, though will be used for nesting if we ever get there.
+  var comm1 = req.body.body;
+  if (topic1 != null && comm1 != null){
+    const query = `insert into comments (post_id, user_id, body) values ('${topic1}','${req.session.user.user_id}', '${comm1}')  returning * ;`;//    const query = `insert into comments (post_id, user_id, chain, body) values ('${topic1}','${req.session.user.user_id}', '${chain1}','${comm1}')  returning * ;`;
+    db.any(query, [
+      req.body.post_id,
+      req.body.body,
+      //req.body.chain1,
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'Comment Added Successfully',
+        });
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  }
+
+  else{
+    res.render('pages/home',{
+    message: "Topic Title or Body Was Empty, Comment Not Posted",
+    }); 
+  }
+});
+
+
+
 app.get('/', (req, res)=>{
   res.redirect('/login');
 });

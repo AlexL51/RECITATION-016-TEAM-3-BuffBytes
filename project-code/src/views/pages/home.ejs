@@ -1,5 +1,7 @@
 <%- include ('../partials/header') %> 
 <%- include ('../partials/menu') %>
+<%- include ('../partials/message') %>
+
 <main>
     
 
@@ -40,18 +42,25 @@
                             <div class="row text-center op-7">
                                 <div class="col px-1">
                                     <i class="ion-ios-chatboxes-outline icon-1x"></i> 
-                                    <!--Need to add comments to the topics database-->
                                     <a class="d-block text-sm" href="/comments/<%=topic.post_id%>">47 replies</a> 
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>         
                 </div>
+<<<<<<< HEAD
             </div>
             <br>
         <% }); %>
 
+=======
+                <br>
+            <% }); %>
+            <form action="add_post" method="get">
+                <input type="submit" value="New Post" />
+            </form>
+        </div>
+>>>>>>> 3477b6bc5dd09ae24c15d212cf032b99a27c4a10
     </div>
 </main>
 <%- include ('../partials/footer') %> 
