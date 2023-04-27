@@ -10,7 +10,7 @@ An accessible web application for CU students. This app would replace the disarr
 * Maxwell Folger -- Backend
 * Alex Ludwigson -- Frontend
 * Jesus Carnero -- Frontend
-* Ben Lipman
+* Ben Lipman -- Frontend & Backend
 
 ## Versions:
 

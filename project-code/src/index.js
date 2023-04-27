@@ -1,5 +1,5 @@
 // *********************************
-// <!-- Section 1 : Dependencies-->
+// Dependencies
 // *********************************
 
 // importing the dependencies
@@ -14,15 +14,12 @@ const session = require('express-session'); // To set the session object. To sto
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server. We'll learn more about it in Part B.
 
-// Change app settings
-
-app.set('view engine', 'ejs');
-app.use(bodyParser.json());
+var request =express();
 
 
-// ***********************************
-// Database Initialization
-// ***********************************
+// *****************************************************
+// Connect to Database
+// *****************************************************
 
 // using bodyParser to parse JSON in the request body into JS objects
 app.use(bodyParser.json());
@@ -37,6 +34,38 @@ const dbConfig = {
 // Connect to database using the above details
 const db = pgp(dbConfig);
 
+
+// test your database
+db.connect()
+  .then(obj => {
+    console.log('Database connection successful'); // you can view this message in the docker compose logs
+    obj.done(); // success, release the connection;
+  })
+  .catch(error => {
+    console.log('ERROR:', error.message || error);
+  });
+
+// *****************************************************
+// App Settings
+// *****************************************************
+
+app.set('view engine', 'ejs'); // set the view engine to EJS
+app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
+
+// initialize session variables
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: false,
+    resave: false,
+  })
+);
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 // ****************************************************
 // Test Endpoints
@@ -69,89 +98,23 @@ app.get('/testDatabase', function (req, res) {
 
 // Default Endpoint
 
-app.post('/add_topic', function (req, res) {
-  var title1 = req.body.title;
-  var post1 = req.body.post;
-  if (title1 != null && post1 != null){
-    const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
-    db.any(query, [
-      req.body.title1,
-      req.body.post1,
-    ])
-      // if query execution succeeds
-      // send success message
-      .then(function (data) {
-        res.status(201).json({
-          status: 'success',
-          data: data,
-          message: 'Post Added Successfully',
-        });
-      })
-      // if query execution fails 
-      // send error message
-      .catch(function (err) {
-        return console.log(err);
-      });
-  }
-
-  else{
-    res.render('pages/home',{
-    message: "Title or Body Was Empty, Topic Not Posted",
-    }); 
-  }
-});
-
-
-app.post('/add_comment', function (req, res) {
-  var topic1 = req.body.post_id;
-  var chain1 = req.body.chain; //Is currently a TEXT, but will change to INT eventually
-  var comm1 = req.body.body;
-  if (topic1 != null && comm1 != null){
-    const query = `insert into comments (post_id, user_id, chain, body) values ('${topic1}','${req.session.user.user_id}', '${chain1}','${comm1}')  returning * ;`;
-    db.any(query, [
-      req.body.post_id,
-      req.body.body,
-      req.body.chain1,
-    ])
-      // if query execution succeeds
-      // send success message
-      .then(function (data) {
-        res.status(201).json({
-          status: 'success',
-          data: data,
-          message: 'Comment Added Successfully',
-        });
-      })
-      // if query execution fails 
-      // send error message
-      .catch(function (err) {
-        return console.log(err);
-      });
-  }
-
-  else{
-    res.render('pages/home',{
-    message: "Topic or Body Was Empty, Comment Not Posted",
-    }); 
-  }
-});
-
-
-
 app.get('/', (req, res)=>{
   res.redirect('/login');
 });
+
+// Login
 
 app.get('/login', (req, res)=>{
     res.render('pages/login.ejs');
 });
 
 app.post('/login', async (req, res)=>{
-  res.render('pages/login.ejs');
+  console.log("Login POST Request");
+  console.log("req.body: ", req.body);
   const query = "SELECT * FROM users WHERE (username = $1);";
   db.any(query,[req.body.username])
-  .then(async (data)=>{
-    const user = data;
+  .then(async (data)=>{ 
+    const user = data[0];
     console.log(data);
     const match = await bcrypt.compare(req.body.password, data[0].password);
     if(match){
@@ -169,14 +132,20 @@ app.post('/login', async (req, res)=>{
   })
 });
 
+// Register
 
 app.get('/register', (req, res)=>{
     res.render('pages/register.ejs');
 });
 
+app.post('/register', async (req,res) => {
 
-app.post('/register', async (req,res)=>{
+  console.log('req.body: ', req.body);
+  console.log('req.body.username', req.body.username);
+  console.log('req.body.password', req.body.password);
 
+
+  // Define Hash password function
   async function hashPassword(password) {
     try {
       const salt = await bcrypt.genSalt(10);
@@ -188,14 +157,17 @@ app.post('/register', async (req,res)=>{
     }
   }
 
-  const hashedPassword = hashPassword(req.body.password)
+  // Take password from req.body.password and hash it.
+  const hashedPassword = await hashPassword(req.body.password)
     .then((hash) => {
       console.log('Hash:', hash);
+      return hash;
     })
     .catch((error) => {
       console.error(error);
     });
 
+    console.log("hashedPassword: ", hashedPassword);
     const query = `INSERT INTO users (username, profile_image, password, description) 
           values ($1, 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', $2, 'Add a description of yourself here.');`
     db.any(query, [req.body.username, hashedPassword])
@@ -208,16 +180,180 @@ app.post('/register', async (req,res)=>{
     })
 });
 
-app.get('/home', (req,res)=>{
-    res.render('pages/home.ejs');
+app.get('/home', (req, res) => {
+  const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
+  db.any(query)
+    .then((topics) => {
+      res.render('pages/home', { 
+        topics: topics
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send('Error fetching topics');
+    });
 });
 
+// Logout
 app.get('/logout', (req, res)=>{
   req.session.user = null;
   req.session.delete();
   res.render('pages/login.ejs', {message: 'logged out successfully'});
 })
 
+// Profile Page
+app.get('/profile', (req, res)=>{
+  console.log("Profile GET request");
+ 
+  // If the user isn't logged in, redirect to the login page.
+  if (req.session.user === null) {
+    res.render('pages/login.ejs');
+    return;
+  };
+  
+  // Ask database for info about the current user
+  const userQuery = `SELECT * FROM users WHERE username = $1;`;
+  const topicQuery = 'SELECT * FROM topics WHERE user_id = $1 ORDER BY post_id DESC;';
+  try {
+    var username = req.session.user.username;
+  }
+  catch(err) {
+    console.log(err);
+    res.redirect('/home');
+  }
+  
+  db.task('get-profile', async function (t) { 
+    const user = await t.oneOrNone(userQuery, username); 
+    if(!user) { 
+      throw new Error('User not found');
+    }
+    const topics = await t.any(topicQuery, user.user_id); 
+    return { user, topics }; 
+  })
+  .then(({user, topics}) => { 
+    res.render('pages/profile.ejs', { 
+      currUser: user, 
+      userTopics: topics
+    });
+  })
+  .catch(function (err) {
+    console.log(err);
+    res.redirect('/home');
+  });
+});
+
+
+// New Post Page
+
+app.get('/new_post_page', (req, res)=>{
+  console.log("New post page request");
+  res.render('pages/new_post_page.ejs');
+ 
+  // If the user isn't logged in, redirect to the login page.
+  if (req.session.user === null) {
+    res.render('pages/login.ejs');
+  };
+  
+  // Ask database for info about the current user
+  try {
+    var username = req.session.user.username;
+  }
+  catch(err) {
+    console.log(err);
+    res.redirect('/home');
+  }
+  db.any(query, username)
+  .then(queryResult => {
+    res.render('pages/profile.ejs', {
+      currUser: queryResult[0],
+    });
+  })
+  .catch(function (err) {
+    console.log(err);
+    res.redirect('/home');
+  });
+});
+
+// New Post Page
+
+app.get('/add_post', (req, res) => {
+  console.log("req.session.user: ", req.session.user);
+  console.log("req.session.user[0]: ", req.session.user[0]);
+
+  res.render('pages/new_post_page.ejs', {
+    currUser: req.session.user,
+  });
+});
+
+// Add Post
+
+app.post('/add_post', function (req, res) {
+  console.log("add_post POST request activated!");
+  console.log("req.body for POST request: ", req.body); 
+
+  var title1 = req.body.title;
+  var post1 = req.body.post;
+  if (title1 != null && post1 != null){
+    const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
+    db.any(query, [
+      req.body.title1,
+      req.body.post1,
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'post added successfully',
+        });
+
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  } else {
+    console.log("Activated else block.");
+    res.redirect('home',{
+    message: "Title or Body Was Empty, Topic Not Posted",
+    }); 
+  }
+  res.redirect('home');
+});
+
+
+app.get('/comments/:post_id', (req, res)=>{
+  console.log(req.params.post_id);
+  const query = "SELECT * FROM topics WHERE post_id = $1;";
+  db.any(query, [req.params.post_id])
+  .then(function(data){
+    const query2 = "SELECT * FROM comments WHERE post_id = $1 ORDER BY comment_id;";
+    console.log(data);
+    db.any(query2, [req.params.post_id])
+    .then(function(data1){
+      console.log(data1);
+      const query3 = "SELECT * FROM users ORDER BY user_id;";
+      db.any(query3)
+      .then(function(data2){
+        res.render('pages/post.ejs', {topic: data[0], 
+                                    comments: data1,
+                                    users: data2,});
+      })
+      .catch(function(err){
+        console.log(err);
+      })
+        
+    })
+    .catch(function(err){
+      console.log(err);
+    });
+  })
+  .catch(function(err){
+    console.log(err);
+  });
+});
 // *********************************
 // Start Server
 // *********************************

@@ -5,48 +5,42 @@
 <main>
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
 
-    <!-- To add message.ejs in your pages, you can use the following snippet:  <div class="col"><%- include ('../partials/message') %></div>   -->
-
-    <!-- Makes the entire backgroun a color-->
-        <div class="vh-100" style="background-color: #CFB87C;">
+    <!-- Makes the entire background a color-->
+        <div class="vh" style="background-color: #CFB87C;">
           <div class="container py-5 h-100">
             <!--Div to align card to center-->
             <div class="row d-flex justify-content-center align-items-center h-100">
               <!--Sets width of the card that holds form-->
-              <div class="col col-xl-6">
+              <div class="col col-xl">
                 <!-- Makes card with a radius of 16 px-->
                 <div class="card" style="border-radius: 1rem;">
                   <!-- Aligns the elements in the div to center-->
                     <div class="col-md-9 col-lg-12 d-flex align-items-center">
                       <div class="card-body p-4 p-lg-5 text-black">
                         <!-- Form to process register-->
-                        <form action="/register" method="POST">
+                        <form action="/add_post" method="POST">
         
                           <div class="d-flex align-items-center mb-3 pb-1">
                             <i class="fas fa-cubes fa-2x me-3"></i>
-                            <span class="h1 fw-bold mb-0">BuffHeard</span>
+                            <span class="h1 fw-bold mb-0">New Post</span>
                           </div>
         
-                          <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Register a new account</h5>
-        
+                          <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Author: <%- currUser.username %> </h5>
+
                           <div class="form-group mb-4">
-                            <label class="form-label" for="username">Username</label>
-                            <input type="text" id="username" class="form-control form-control-lg" name="username"/>
+                            <label class="form-label" for="post_title">Post Title</label>
+                            <input type="text" id="post_title" class="form-control form-control-lg" name="title"/>
                           </div>
-        
-                          <div class="form-group mb-4">
-                            <label class="form-label" for="password">Password</label>
-                            <input type="password" id="password" class="form-control form-control-lg" name="password"/>
+
+                          <div class="mb-3">
+                            <label for="post_content" class="form-label">Post Content</label>
+                            <textarea class="form-control" id="postContent" rows="15" name="post"></textarea>
                           </div>
         
                           <div class="pt-1 mb-4">
-                            <button class="btn btn-dark btn-lg btn-block" type="submit">Register</button>
+                            <button class="btn btn-dark btn-lg btn-block" type="add_post">Post!</button>
                           </div>
-                          <!--Redirect to /login if they have an account-->
-                          <p class="mb-5 pb-lg-2" style="color: #000000;">Already have an account? <a href="/login"
-                              style="color: #2b3ae3;">Login here</a></p>
                         </form>
-        
                       </div>
                     </div>
                   </div>

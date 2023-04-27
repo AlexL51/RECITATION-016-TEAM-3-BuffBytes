@@ -2,11 +2,13 @@
 -- https://www.slideshare.net/billkarwin/sql-antipatterns-strike-back?src=embeds
 -- TEXT Supports truly infinite depth
 
+-- TODO: Enforce username uniqueness. Many of our queries rely on it.
+
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
   username VARCHAR(255) NOT NULL,
   profile_image VARCHAR(255) NOT NULL,
-  password VARCHAR(50) NOT NULL,
+  password TEXT NOT NULL,
   description TEXT
 );
 
