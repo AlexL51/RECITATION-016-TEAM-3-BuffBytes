@@ -113,7 +113,7 @@ app.post('/login', async (req, res)=>{
   console.log("req.body: ", req.body);
   const query = "SELECT * FROM users WHERE (username = $1);";
   db.any(query,[req.body.username])
-  .then(async (data)=>{
+  .then(async (data)=>{ 
     const user = data[0];
     console.log(data);
     const match = await bcrypt.compare(req.body.password, data[0].password);
@@ -141,7 +141,6 @@ app.get('/register', (req, res)=>{
 app.post('/register', async (req,res) => {
 
   console.log('req.body: ', req.body);
-
   console.log('req.body.username', req.body.username);
   console.log('req.body.password', req.body.password);
 
@@ -275,10 +274,23 @@ app.get('/new_post_page', (req, res)=>{
   });
 });
 
+// New Post Page
+
+app.get('/add_post', (req, res) => {
+  console.log("req.session.user: ", req.session.user);
+  console.log("req.session.user[0]: ", req.session.user[0]);
+
+  res.render('pages/new_post_page.ejs', {
+    currUser: req.session.user,
+  });
+});
 
 // Add Post
 
 app.post('/add_post', function (req, res) {
+  console.log("add_post POST request activated!");
+  console.log("req.body for POST request: ", req.body); 
+
   var title1 = req.body.title;
   var post1 = req.body.post;
   if (title1 != null && post1 != null){
@@ -295,19 +307,20 @@ app.post('/add_post', function (req, res) {
           data: data,
           message: 'post added successfully',
         });
+
       })
       // if query execution fails 
       // send error message
       .catch(function (err) {
         return console.log(err);
       });
-  }
-
-  else{
-    res.render('pages/home',{
+  } else {
+    console.log("Activated else block.");
+    res.redirect('home',{
     message: "Title or Body Was Empty, Topic Not Posted",
     }); 
   }
+  res.redirect('home');
 });
 
 
