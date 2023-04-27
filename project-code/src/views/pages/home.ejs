@@ -1,10 +1,16 @@
 <%- include ('../partials/header') %> 
 <%- include ('../partials/menu') %>
 <main>
-    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+    
+
     <div class = "container bg-light"> 
         <br>
-        <h3>BuffHeard</h3>
+        <flex>
+            <h3>BuffHeard</h3>
+            <form action="add_post" method="get">
+                <input class="buff-heard-button btn btn-primary" type="submit" value="New Post" />
+            </form>
+        </flex>
         <br>
         <% topics.forEach(function(topic) { %>
             <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1">
@@ -45,9 +51,7 @@
             </div>
             <br>
         <% }); %>
-        <form action="add_post" method="get">
-            <input class="buff-heard-button" type="submit" value="New Post" />
-        </form>
+
     </div>
 </main>
 <%- include ('../partials/footer') %> 
