@@ -133,14 +133,14 @@ app.post('/add_topic', function (req, res) {
 
 app.post('/add_comment', function (req, res) {
   var topic1 = req.body.post_id;
-  var chain1 = req.body.chain; //Is currently a TEXT, but will change to INT eventually
+  //var chain1 = req.body.chain; Is currently a INT, though will be used for nesting if we ever get there.
   var comm1 = req.body.body;
   if (topic1 != null && comm1 != null){
-    const query = `insert into comments (post_id, user_id, chain, body) values ('${topic1}','${req.session.user.user_id}', '${chain1}','${comm1}')  returning * ;`;
+    const query = `insert into comments (post_id, user_id, body) values ('${topic1}','${req.session.user.user_id}', '${comm1}')  returning * ;`;//    const query = `insert into comments (post_id, user_id, chain, body) values ('${topic1}','${req.session.user.user_id}', '${chain1}','${comm1}')  returning * ;`;
     db.any(query, [
       req.body.post_id,
       req.body.body,
-      req.body.chain1,
+      //req.body.chain1,
     ])
       // if query execution succeeds
       // send success message
