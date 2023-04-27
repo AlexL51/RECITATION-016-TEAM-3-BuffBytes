@@ -23,7 +23,7 @@
                             I have to implement a max display length
                             and a '...' button to continue reading.-->
                         <div class="text-sm op-5"> 
-                            <% if (topic.body.length > 97) { %>
+                            <% if (topic.body.length > 97 ){ %>
                                 <span style="display: inline"><%= topic.body.substring(0, 97) %></span>
                                 <a href="#" style="display: inline">...</a>       
                             <% } else { %>
@@ -42,18 +42,12 @@
                     </div>
                     
                 </div>
-<<<<<<< HEAD
             </div>
             <br>
         <% }); %>
         <form action="add_post" method="get">
-            <input type="submit" value="New Post" />
+            <input class="buff-heard-button" type="submit" value="New Post" />
         </form>
-=======
-                <br>
-            <% }); %>
-        </div>
->>>>>>> main
     </div>
 </main>
 <%- include ('../partials/footer') %> 
