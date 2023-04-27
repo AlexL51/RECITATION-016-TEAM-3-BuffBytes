@@ -17,6 +17,10 @@ const axios = require('axios'); // To make HTTP requests from our server. We'll 
 var request =express();
 
 
+// Custom stylesheets
+
+app.use(express.static('resources'));
+
 // *****************************************************
 // Connect to Database
 // *****************************************************
