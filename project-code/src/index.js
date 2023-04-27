@@ -266,7 +266,7 @@ app.get('/home', (req, res) => {
 // Logout
 app.get('/logout', (req, res)=>{
   req.session.user = null;
-  req.session.delete();
+  req.session.save();
   res.render('pages/login.ejs', {message: 'logged out successfully'});
 })
 
