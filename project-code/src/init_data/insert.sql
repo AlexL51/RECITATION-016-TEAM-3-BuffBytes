@@ -23,6 +23,9 @@ select setval(pg_get_serial_sequence('users', 'user_id'), (select max(user_id) f
 
 insert into topics (post_id, user_id, subject, body) values (1, 3, 'Test Post', 'What will be on the test?');
 insert into topics (post_id, user_id, subject, body) values (2, 5, 'Other Post', 'Nothing is complete without a second example');
+insert into topics (post_id, user_id, subject, body) values (3, 3, 'A Long Post', 'This is a test for a longer post, and to see how multiple posts look on the profile page'); 
+insert into topics (post_id, user_id, subject, body) values (4, 3, 'Shortest Path?', 'How do I find the shortest path between nodes in a weighted graph?'); 
+
 
 select setval(pg_get_serial_sequence('topics', 'post_id'), (select max(post_id) from topics)+1);
 
