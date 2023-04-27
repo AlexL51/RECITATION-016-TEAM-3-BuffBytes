@@ -1,0 +1,50 @@
+<%- include ('../partials/header') %> 
+<%- include ('../partials/menu') %>
+<main>
+    <div class="vh-100" style="background-color: #CFB87C;">
+    <div class = "container bg-light" style="padding-top:50px; padding-bottom:50px;">
+        <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1">    
+            <h5 class="text-black" style="font-size:30px;"><%= topic.subject %></h5>
+            <div class="text-sm op-5" style="font-size:20px;"><%= topic.body %></div>
+        </div>
+        <h5 style="padding-left:30px;">Comments:</h5>
+        <% comments.forEach(function(comment){ %>
+            <% if(comment.chain == 0){ %>
+                <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1" style="margin-left:20px">
+                    <div class="row">
+                        <img class="img-account-profile rounded-circle mb-2" 
+                        src="<%= users[comment.user_id-1].profile_image %>" 
+                        width="20"
+                        height="20"
+                        alt="">
+                        <!--still need to include path to view profile-->
+                        <a href="#" style="padding-left:10px"><%= users[comment.user_id - 1].username %></a>
+                        <div class="text-sm op-6">:</div>
+                        <div class="text-sm op-6" style="padding-left:10px;"><%= comment.body %></div>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="card row-hover pos-relative py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1" style="margin-left:40px">
+                    <div class="row">
+                        <img class="img-account-profile rounded-circle mb-2" 
+                        src="<%= users[comment.user_id-1].profile_image %>" 
+                        width="20"
+                        height="20"
+                        alt="">
+                        <!--still need to include path to view profile-->
+                        <a href="#" style="padding-left:10px"><%= users[comment.user_id - 1].username %><a>
+                        <div class="text-sm op-6">:</div>
+                        <a href="#" style="padding-left:5px">@<%= users[comments[comment.chain - 1].user_id - 1].username %></a>
+                        <div class="text-sm op-6" style="padding-left:5px;"><%= comment.body %></div>
+                    </div>
+                </div>
+            <% } %>
+        <% }); %>
+    </div>
+    </div>
+</main>
+
+
+
+
+<%- include ('../partials/footer') %> 

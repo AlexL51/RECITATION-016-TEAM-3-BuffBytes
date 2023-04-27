@@ -30,24 +30,30 @@
                                 <a class="text-black mr-2"><%= topic.body %></a>
                             <% } %>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row text-center op-7">
-                            <div class="col px-1">
-                                <i class="ion-ios-chatboxes-outline icon-1x"></i> 
-                                <!--Need to add comments to the topics database-->
-                                <a class="d-block text-sm" href="#">47 replies</a> 
+                        <div class="col-md-4">
+                            <div class="row text-center op-7">
+                                <div class="col px-1">
+                                    <i class="ion-ios-chatboxes-outline icon-1x"></i> 
+                                    <!--Need to add comments to the topics database-->
+                                    <a class="d-block text-sm" href="/comments/<%=topic.post_id%>">47 replies</a> 
+                                </div>
                             </div>
                         </div>
                     </div>
                     
                 </div>
+<<<<<<< HEAD
             </div>
             <br>
         <% }); %>
         <form action="add_post" method="get">
             <input type="submit" value="New Post" />
         </form>
+=======
+                <br>
+            <% }); %>
+        </div>
+>>>>>>> main
     </div>
 </main>
 <%- include ('../partials/footer') %> 

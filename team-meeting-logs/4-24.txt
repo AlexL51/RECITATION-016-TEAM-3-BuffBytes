@@ -1,0 +1,10 @@
+Meeting w/o Nikita: 4/24:
+•Starting to finish overall backend skeleton, work towards more frontend and css stuff
+•Use login page's color scheme with specific CU brown-yellow
+•Nesting comments frontend may be our most difficult coding feat
+•Continue comment-post to be conducive with nesting comments
+•Continue building profile page to include posts
+•Build automatic testing for APIs
+•Build stuctures for like/dislike feature
+•Map API, interactive placement of "pinpoints"
+•Test test test! Make sure new commits work, especially before meeting

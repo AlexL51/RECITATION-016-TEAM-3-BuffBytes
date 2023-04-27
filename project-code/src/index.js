@@ -180,7 +180,6 @@ app.post('/register', async (req,res) => {
     })
 });
 
-
 app.get('/home', (req, res) => {
   const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
   db.any(query)
@@ -196,7 +195,6 @@ app.get('/home', (req, res) => {
 });
 
 // Logout
-
 app.get('/logout', (req, res)=>{
   req.session.user = null;
   req.session.delete();
@@ -210,11 +208,61 @@ app.get('/profile', (req, res)=>{
   // If the user isn't logged in, redirect to the login page.
   if (req.session.user === null) {
     res.render('pages/login.ejs');
+    return;
   };
   
   // Ask database for info about the current user
-  const query = `SELECT * FROM users WHERE username = $1;`;
-  db.any(query, req.session.user.username)
+  const userQuery = `SELECT * FROM users WHERE username = $1;`;
+  const topicQuery = 'SELECT * FROM topics WHERE user_id = $1 ORDER BY post_id DESC;';
+  try {
+    var username = req.session.user.username;
+  }
+  catch(err) {
+    console.log(err);
+    res.redirect('/home');
+  }
+  
+  db.task('get-profile', async function (t) { 
+    const user = await t.oneOrNone(userQuery, username); 
+    if(!user) { 
+      throw new Error('User not found');
+    }
+    const topics = await t.any(topicQuery, user.user_id); 
+    return { user, topics }; 
+  })
+  .then(({user, topics}) => { 
+    res.render('pages/profile.ejs', { 
+      currUser: user, 
+      userTopics: topics
+    });
+  })
+  .catch(function (err) {
+    console.log(err);
+    res.redirect('/home');
+  });
+});
+
+
+// New Post Page
+
+app.get('/new_post_page', (req, res)=>{
+  console.log("New post page request");
+  res.render('pages/new_post_page.ejs');
+ 
+  // If the user isn't logged in, redirect to the login page.
+  if (req.session.user === null) {
+    res.render('pages/login.ejs');
+  };
+  
+  // Ask database for info about the current user
+  try {
+    var username = req.session.user.username;
+  }
+  catch(err) {
+    console.log(err);
+    res.redirect('/home');
+  }
+  db.any(query, username)
   .then(queryResult => {
     res.render('pages/profile.ejs', {
       currUser: queryResult[0],
@@ -224,7 +272,7 @@ app.get('/profile', (req, res)=>{
     console.log(err);
     res.redirect('/home');
   });
-  });
+});
 
 // New Post Page
 
@@ -275,6 +323,37 @@ app.post('/add_post', function (req, res) {
   res.redirect('home');
 });
 
+
+app.get('/comments/:post_id', (req, res)=>{
+  console.log(req.params.post_id);
+  const query = "SELECT * FROM topics WHERE post_id = $1;";
+  db.any(query, [req.params.post_id])
+  .then(function(data){
+    const query2 = "SELECT * FROM comments WHERE post_id = $1 ORDER BY comment_id;";
+    console.log(data);
+    db.any(query2, [req.params.post_id])
+    .then(function(data1){
+      console.log(data1);
+      const query3 = "SELECT * FROM users ORDER BY user_id;";
+      db.any(query3)
+      .then(function(data2){
+        res.render('pages/post.ejs', {topic: data[0], 
+                                    comments: data1,
+                                    users: data2,});
+      })
+      .catch(function(err){
+        console.log(err);
+      })
+        
+    })
+    .catch(function(err){
+      console.log(err);
+    });
+  })
+  .catch(function(err){
+    console.log(err);
+  });
+});
 // *********************************
 // Start Server
 // *********************************
