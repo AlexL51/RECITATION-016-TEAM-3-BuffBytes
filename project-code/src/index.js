@@ -240,6 +240,9 @@ app.get('/add_post', (req, res) => {
 // Add Post
 
 app.post('/add_post', function (req, res) {
+  console.log("add_post POST request activated!");
+  console.log("req.body for POST request: ", req.body); 
+
   var title1 = req.body.title;
   var post1 = req.body.post;
   if (title1 != null && post1 != null){
@@ -256,6 +259,7 @@ app.post('/add_post', function (req, res) {
           data: data,
           message: 'post added successfully',
         });
+
       })
       // if query execution fails 
       // send error message
@@ -263,10 +267,12 @@ app.post('/add_post', function (req, res) {
         return console.log(err);
       });
   } else {
-    res.render('pages/home',{
+    console.log("Activated else block.");
+    res.redirect('home',{
     message: "Title or Body Was Empty, Topic Not Posted",
     }); 
   }
+  res.redirect('home');
 });
 
 // *********************************
