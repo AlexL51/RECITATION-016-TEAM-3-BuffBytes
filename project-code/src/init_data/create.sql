@@ -24,7 +24,7 @@ CREATE TABLE comments (
   comment_id SERIAL PRIMARY KEY,
   post_id INT NOT NULL,
   user_id INT NOT NULL,
-  chain TEXT, -- Will change to INT eventually, but leave for now for test cases.
+  chain INT, -- This can be null if it is the first comment in a post. Though this will be used for nesting which will come later.
   body TEXT,
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
