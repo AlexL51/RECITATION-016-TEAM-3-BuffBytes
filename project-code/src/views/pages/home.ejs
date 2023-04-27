@@ -3,7 +3,7 @@
 <main>
     <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
     <div class="vh-100" style="background-color: #CFB87C;">
-        <div class = "container bg-light"> 
+        <div class = "container"> 
             <br>
             <h3>BuffHeard</h3>
             <br>
@@ -14,15 +14,10 @@
                             <h5 class="text-black"><%= topic.subject %></h5>
                             <p class="text-sm">
                                 <span class="op-6">Posted by</span>
-                                <!--Need to add link to user page
-                                    and show username not id-->
                                 <a class="text-black" href="#">
                                     <%= topic.username %>
                                 </a>
                             </p>
-                            <!--This div is for the post body
-                                I have to implement a max display length
-                                and a '...' button to continue reading.-->
                             <div class="text-sm op-5"> 
                                 <% if (topic.body.length > 97) { %>
                                     <span style="display: inline"><%= topic.body.substring(0, 97) %></span>
@@ -36,8 +31,7 @@
                             <div class="row text-center op-7">
                                 <div class="col px-1">
                                     <i class="ion-ios-chatboxes-outline icon-1x"></i> 
-                                    <!--Need to add comments to the topics database-->
-                                    <a class="d-block text-sm" href="#">47 replies</a> 
+                                    <a class="d-block text-sm" href="/comments/<%=topic.post_id%>">47 replies</a> 
                                 </div>
                             </div>
                         </div>
@@ -45,6 +39,9 @@
                 </div>
                 <br>
             <% }); %>
+            <form action="add_post" method="get">
+                <input type="submit" value="New Post" />
+            </form>
         </div>
     </div>
 </main>
