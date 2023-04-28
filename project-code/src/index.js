@@ -254,11 +254,20 @@ app.post('/register', async (req,res) => {
 });
 
 app.get('/home', (req, res) => {
-  const query = "SELECT t.post_id, u.username, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
+  const query = "SELECT t.post_id, u.username, u.profile_image, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
   db.any(query)
     .then((topics) => {
-      res.render('pages/home', { 
-        topics: topics
+      const query2 = "SELECT COUNT(*), post_id FROM comments GROUP BY post_id;";
+      db.any(query2)
+        .then((commentCount)=>{
+          res.render('pages/home', { 
+            topics: topics,
+            comments: commentCount
+            });
+        })
+        .catch((error)=>{
+          console.log(error);
+          res.send('Error fetching comments');
         });
     })
     .catch((error) => {
