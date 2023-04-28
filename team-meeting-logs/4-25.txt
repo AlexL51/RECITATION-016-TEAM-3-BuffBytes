@@ -3,3 +3,10 @@ Meeting With Nikita
 *What to focus on: things that have the most value for the user.
 *The nested comments, which would be one of our hardest tasks, should be put aside for later. Prioritize map ahead of this
 *Even though map would be great, focus on the forum portion first. Top Priority: All working elements of forum with all current stuff plus: regular post comments, frontend design, user history
+
+
+
+Plans for Next Week:
+*Finish all skeleton and backend stuff
+*Continue to make everything look really pretty with smooth UI
+*Implement Google Maps API
