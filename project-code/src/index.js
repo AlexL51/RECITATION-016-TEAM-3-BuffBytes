@@ -399,7 +399,7 @@ app.post('/add_post', function (req, res) {
 
 app.get('/comments/:post_id', (req, res)=>{
   console.log(req.params.post_id);
-  const query = "SELECT * FROM topics WHERE post_id = $1;";
+  const query = "SELECT topics.*, users.username FROM topics JOIN users ON topics.user_id = users.user_id WHERE post_id = $1;";
   db.any(query, [req.params.post_id])
   .then(function(data){
     const query2 = "SELECT * FROM comments WHERE post_id = $1 ORDER BY comment_id;";
@@ -427,6 +427,7 @@ app.get('/comments/:post_id', (req, res)=>{
     console.log(err);
   });
 });
+
 // *********************************
 // Start Server
 // *********************************
