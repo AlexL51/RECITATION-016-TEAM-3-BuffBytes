@@ -37,4 +37,8 @@ insert into comments (comment_id, user_id, post_id, chain, body) values (3, 3, 1
 insert into comments (comment_id, user_id, post_id, chain, body) values (4, 4, 1, 1, 'That''s not too bad');
 insert into comments (comment_id, user_id, post_id, chain, body) values (5, 2, 1, 3, 'i still dont want any');
 
+insert into comments (comment_id, user_id, post_id, chain, body) values (6, 2, 1, 0, 'Hopefully nothing');
+insert into comments (comment_id, user_id, post_id, chain, body) values (7, 3, 1, 6, 'That would be nice');
+insert into comments (comment_id, user_id, post_id, chain, body) values (8, 1, 1, 7, 'We can dream');
+
 select setval(pg_get_serial_sequence('comments', 'comment_id'), (select max(comment_id) from comments)+1);
