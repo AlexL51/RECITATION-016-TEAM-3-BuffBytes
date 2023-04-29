@@ -1,0 +1,12 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<main>
+    <div class="container">
+        <% subjects.ForEach(element =>{%>
+            <div>
+                <a href="/home?subject=element"><%- element -%></a>
+            </div>
+       <% });%>
+    </div>
+</main>
