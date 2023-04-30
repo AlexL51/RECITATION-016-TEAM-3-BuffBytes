@@ -135,25 +135,28 @@ app.post('/add_topic', function (req, res) {
 });
 
 
-app.post('/add_comment', function (req, res) {
-  var topic1 = req.body.post_id;
-  //var chain1 = req.body.chain; Is currently a INT, though will be used for nesting if we ever get there.
+app.post('/add_comment/:post_id/:chain', function (req, res) {
+  var topic1 = req.params.post_id;
+  var chain1 = req.params.chain; //Is currently a INT, though will be used for nesting if we ever get there.
   var comm1 = req.body.body;
   if (topic1 != null && comm1 != null){
-    const query = `insert into comments (post_id, user_id, body) values ('${topic1}','${req.session.user.user_id}', '${comm1}')  returning * ;`;//    const query = `insert into comments (post_id, user_id, chain, body) values ('${topic1}','${req.session.user.user_id}', '${chain1}','${comm1}')  returning * ;`;
+    const query = `insert into comments (comment_id, post_id, user_id, chain, body) values ((SELECT max(comment_id)+1 FROM comments),'${topic1}','${req.session.user.user_id}','${chain1}', '${comm1}')  returning * ;`;//    const query = `insert into comments (post_id, user_id, chain, body) values ('${topic1}','${req.session.user.user_id}', '${chain1}','${comm1}')  returning * ;`;
     db.any(query, [
-      req.body.post_id,
+      req.params.post_id,
+      req.session.user.user_id,
       req.body.body,
-      //req.body.chain1,
+      req.body.chain1,
     ])
       // if query execution succeeds
       // send success message
       .then(function (data) {
-        res.status(201).json({
-          status: 'success',
-          data: data,
-          message: 'Comment Added Successfully',
-        });
+        //res.status(201).json({
+        //  status: 'success',
+        //  data: data,
+        //  message: 'Comment Added Successfully',
+        //});
+        console.log(data);
+        res.redirect('/comments/'+topic1);
       })
       // if query execution fails 
       // send error message
@@ -212,7 +215,7 @@ app.get('/register', (req, res)=>{
 });
 
 app.post('/register', async (req,res) => {
-
+  //var newId;
   console.log('req.body: ', req.body);
   console.log('req.body.username', req.body.username);
   console.log('req.body.password', req.body.password);
@@ -239,11 +242,10 @@ app.post('/register', async (req,res) => {
     .catch((error) => {
       console.error(error);
     });
-
     console.log("hashedPassword: ", hashedPassword);
-    const query = `INSERT INTO users (username, profile_image, password, description) 
-          values ($1, 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', $2, 'Add a description of yourself here.');`
-    db.any(query, [req.body.username, hashedPassword])
+    const query = `INSERT INTO users (user_id, username, profile_image, password, description) 
+          values ((SELECT max(user_id)+1 FROM users), $1, 'https://www.dlf.pt/dfpng/maxpng/276-2761324_default-avatar-png.png', $2, 'Add a description of yourself here.');`
+    db.any(query, [ req.body.username, hashedPassword])
     .then(function(data) {
         res.redirect('/login');
     })
@@ -408,6 +410,7 @@ app.post('/add_post', function (req, res) {
 
 app.get('/comments/:post_id', (req, res)=>{
   console.log(req.params.post_id);
+  const currentUser = req.session.user.user_id;
   const query = "SELECT topics.*, users.username FROM topics JOIN users ON topics.user_id = users.user_id WHERE post_id = $1;";
   db.any(query, [req.params.post_id])
   .then(function(data){
@@ -419,9 +422,11 @@ app.get('/comments/:post_id', (req, res)=>{
       const query3 = "SELECT * FROM users ORDER BY user_id;";
       db.any(query3)
       .then(function(data2){
+        console.log(data2);
         res.render('pages/post.ejs', {topic: data[0], 
                                     comments: data1,
-                                    users: data2,});
+                                    users: data2,
+                                    curr_user_id: currentUser,});
       })
       .catch(function(err){
         console.log(err);
@@ -434,6 +439,36 @@ app.get('/comments/:post_id', (req, res)=>{
   })
   .catch(function(err){
     console.log(err);
+  });
+});
+
+app.get('/newComment/:post_id/:chain/:user_id', (req,res)=>{
+  const query = "SELECT * FROM comments WHERE post_id = $1;";
+  db.any(query,[req.params.post_id])
+  .then(function(data){
+    const query2 = "SELECT * FROM users ORDER BY user_id;";
+    db.any(query2)
+    .then(function(data1){
+      const query3 = "SELECT topics.*, users.username FROM topics JOIN users ON topics.user_id = users.user_id WHERE post_id = $1;";
+      db.any(query3,[req.params.post_id])
+      .then(function(data2){
+                res.render('pages/new_comment_page.ejs',{post_id: req.params.post_id,
+                                    chain: req.params.chain,
+                                    user_id: req.params.user_id,
+                                    comments: data,
+                                    users: data1,
+                                    topic: data2[0]});
+      })
+      .catch(function(error){
+        console.log(error);
+      });
+    })
+    .catch(function(error){
+      console.log(error);
+    });
+  })
+  .catch(function(error){
+    console.log(error);
   });
 });
 

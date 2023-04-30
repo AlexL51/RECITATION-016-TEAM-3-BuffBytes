@@ -1,7 +1,8 @@
-<%- include ('../partials/header') %> 
+<%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
+
 <main>
-    <div class="vh" style="background-color: #CFB87C;">
+    <div class="vh-100" style="background-color: #CFB87C;">
     <div class = "container" style="padding-top:50px; padding-bottom:50px;">
         <div class="card row-hover pos-relative py-3 px-3 mb-3 rounded-1">    
             <h5 class="text-black" style="font-size:30px;"><%= topic.subject %></h5>
@@ -13,9 +14,17 @@
                     <%= topic.username %>
                 </a>
             </p>
-            <a href="/newComment/<%=topic.post_id%>/0/<%=curr_user_id%>"style="margin-left:auto; margin-right:10px;">New Comment</a>
+            <a href="/newComment/<%=topic.post_id%>/0/<%=user_id%>"style="margin-left:auto; margin-right:10px;">New Comment</a>
         </div>
         <h5 style="padding-left:30px;">Comments:</h5>
+        <% if (chain == 0){ %>
+            <form action="/add_comment/<%=post_id%>/<%=chain%>" style="margin-left:10px;" method="POST">
+                <label class="form-label" for="comment_body">Comment</label>
+                <input type="text" id="comment_body" class="form-control form-control-lg" name="body"/>
+                <button class="btn btn-dark btn-lg btn-block buff-heard-button" type="add_post">Post!</button>
+            </form>
+
+        <% } %>
         <% comments.forEach(function(comment){ %>
             <% if(comment.chain == 0){ %>
                 <div class="card row-hover pos-relative py-3 px-3 mb-3 border border-top-0 border-right-0 border-bottom-0 rounded-1" style="margin-left:20px">
@@ -29,9 +38,16 @@
                         <a href="#" style="padding-left:10px"><%= users[comment.user_id - 1].username %></a>
                         <div class="text-sm op-6">:</div>
                         <div class="text-sm op-6" style="padding-left:10px;"><%= comment.body %></div>
-                        <a href="/newComment/<%=topic.post_id%>/<%=comment.comment_id%>/<%=curr_user_id%>" style="margin-left:auto; margin-right:10px;">Reply</a>
+                        <a href="/newComment/<%=topic.post_id%>/<%=comment.comment_id%>/<%=user_id%>" style="margin-left:auto; margin-right:10px;">Reply</a>
                     </div>
                 </div>
+                <% if(chain == comment.comment_id){ %>
+                    <form action="/add_comment/<%=post_id%>/<%=chain%>" style="margin-left:20px;" method="POST">
+                        <label class="form-label" for="comment_body">Comment</label>
+                        <input type="text" id="comment_body" class="form-control form-control-lg" name="body"/>
+                        <button class="btn btn-dark btn-lg btn-block buff-heard-button" type="add_post">Post!</button>
+                    </form>
+                <% } %>
             <% } else { %>
                 <div class="card row-hover pos-relative py-3 px-3 mb-3 border border-top-0 border-right-0 border-bottom-0 rounded-1" style="margin-left:40px">
                     <div class="row">
@@ -45,9 +61,16 @@
                         <div class="text-sm op-6">:</div>
                         <a href="#" style="padding-left:5px">@<%= users[comments[comment.chain - 1].user_id - 1].username %></a>
                         <div class="text-sm op-6" style="padding-left:5px;"><%= comment.body %></div>
-                        <a href="/newComment/<%=topic.post_id%>/<%=comment.comment_id%>/<%=curr_user_id%>" style="margin-left:auto; margin-right:10px;">Reply</a>
+                        <a href="/newComment/<%=topic.post_id%>/<%=comment.comment_id%>/<%=user_id%>" style="margin-left:auto; margin-right:10px;">Reply</a>
                     </div>
                 </div>
+                <% if(chain == comment.comment_id) { %>
+                    <form action="/add_comment/<%=post_id%>/<%=chain%>" style="margin-left:40px;" method="POST">
+                        <label class="form-label" for="comment_body">Comment</label>
+                        <input type="text" id="comment_body" class="form-control form-control-lg" name="body"/>
+                        <button class="btn btn-dark btn-lg btn-block buff-heard-button" type="add_post">Post!</button>
+                    </form>
+                <% } %>
             <% } %>
         <% }); %>
     </div>
@@ -57,4 +80,5 @@
 
 
 
-<%- include ('../partials/footer') %> 
+
+<%- include ('../partials/footer') %>
