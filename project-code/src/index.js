@@ -443,7 +443,7 @@ app.get('/comments/:post_id', (req, res)=>{
 });
 
 app.get('/newComment/:post_id/:chain/:user_id', (req,res)=>{
-  const query = "SELECT * FROM comments WHERE post_id = $1;";
+  const query = "SELECT * FROM comments WHERE post_id = $1 ORDER BY comment_id;";
   db.any(query,[req.params.post_id])
   .then(function(data){
     const query2 = "SELECT * FROM users ORDER BY user_id;";
@@ -454,7 +454,7 @@ app.get('/newComment/:post_id/:chain/:user_id', (req,res)=>{
       .then(function(data2){
                 res.render('pages/new_comment_page.ejs',{post_id: req.params.post_id,
                                     chain: req.params.chain,
-                                    user_id: req.params.user_id,
+                                    curr_user_id: req.params.user_id,
                                     comments: data,
                                     users: data1,
                                     topic: data2[0]});
