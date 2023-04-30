@@ -1,7 +1,7 @@
 <%- include ('../partials/header') %> 
 <%- include ('../partials/menu') %>
 <main>
-    <div class="vh" style="background-color: #CFB87C;">
+    <div class="vh-100" style="background-color: #CFB87C;">
     <div class = "container" style="padding-top:50px; padding-bottom:50px;">
         <div class="card row-hover pos-relative py-3 px-3 mb-3 rounded-1">    
             <h5 class="text-black" style="font-size:30px;"><%= topic.subject %></h5>
@@ -32,23 +32,30 @@
                         <a href="/newComment/<%=topic.post_id%>/<%=comment.comment_id%>/<%=curr_user_id%>" style="margin-left:auto; margin-right:10px;">Reply</a>
                     </div>
                 </div>
-            <% } else { %>
-                <div class="card row-hover pos-relative py-3 px-3 mb-3 border border-top-0 border-right-0 border-bottom-0 rounded-1" style="margin-left:40px">
-                    <div class="row">
-                        <img class="img-account-profile rounded-circle mb-2" 
-                        src="<%= users[comment.user_id-1].profile_image %>" 
-                        width="20"
-                        height="20"
-                        alt="">
-                        <!--still need to include path to view profile-->
-                        <a href="#" style="padding-left:10px"><%= users[comment.user_id - 1].username %><a>
-                        <div class="text-sm op-6">:</div>
-                        <a href="#" style="padding-left:5px">@<%= users[comments[comment.chain - 1].user_id - 1].username %></a>
-                        <div class="text-sm op-6" style="padding-left:5px;"><%= comment.body %></div>
-                        <a href="/newComment/<%=topic.post_id%>/<%=comment.comment_id%>/<%=curr_user_id%>" style="margin-left:auto; margin-right:10px;">Reply</a>
+                <% var list_ids = [];%>
+                <% list_ids.push(comment.comment_id); %>
+                <% comments.forEach(function(comment1){ %>
+                    <%if(list_ids.includes(comment1.chain)){ %>
+                    <div class="card row-hover pos-relative py-3 px-3 mb-3 border border-top-0 border-right-0 border-bottom-0 rounded-1" style="margin-left:40px">
+                        <div class="row">
+                            <img class="img-account-profile rounded-circle mb-2" 
+                            src="<%= users[comment1.user_id-1].profile_image %>" 
+                            width="20"
+                            height="20"
+                            alt="">
+                            <!--still need to include path to view profile-->
+                            <a href="#" style="padding-left:10px"><%= users[comment1.user_id - 1].username %><a>
+                            <div class="text-sm op-6">:</div>
+                            <a href="#" style="padding-left:5px">@<%= users[comments[comment1.chain - 1].user_id - 1].username %></a>
+                            <div class="text-sm op-6" style="padding-left:5px;"><%= comment1.body %></div>
+                            <a href="/newComment/<%=topic.post_id%>/<%=comment1.comment_id%>/<%=curr_user_id%>" style="margin-left:auto; margin-right:10px;">Reply</a>
+                        </div>
                     </div>
-                </div>
-            <% } %>
+                    <%list_ids.push(comment1.comment_id);%>
+                <%}%>
+            <% }); %>
+            <%list_ids = [];%>
+            <%}%>
         <% }); %>
     </div>
     </div>
