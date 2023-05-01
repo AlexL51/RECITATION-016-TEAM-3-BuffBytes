@@ -17,6 +17,9 @@ CREATE TABLE topics (
   user_id INT NOT NULL,
   subject VARCHAR(1000) NOT NULL,
   body TEXT,
+  map BOOLEAN, 
+  map_long DECIMAL,
+  map_lat DECIMAL,
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
