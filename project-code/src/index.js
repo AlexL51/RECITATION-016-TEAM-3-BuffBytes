@@ -297,7 +297,7 @@ app.get('/profile', (req, res)=>{
   
   // Ask database for info about the current user
   const userQuery = `SELECT * FROM users WHERE username = $1;`;
-  const topicQuery = 'SELECT * FROM topics WHERE user_id = $1 ORDER BY post_id DESC;';
+  const topicQuery = 'SELECT *, (SELECT COUNT(*) FROM comments WHERE post_id = topics.post_id) AS comment_count FROM topics WHERE user_id = $1 ORDER BY post_id DESC;'; //const topicQuery = 'SELECT * FROM topics WHERE user_id = $1 ORDER BY post_id DESC;';
   try {
     var username = req.session.user.username;
   }
@@ -314,7 +314,7 @@ app.get('/profile', (req, res)=>{
     const topics = await t.any(topicQuery, user.user_id); 
     return { user, topics }; 
   })
-  .then(({user, topics}) => { 
+  .then(({user, topics}) => {
     res.render('pages/profile.ejs', { 
       currUser: user, 
       userTopics: topics

@@ -35,14 +35,14 @@
               <% } else { %>
                 <% userTopics.forEach(function(topic) { %>
                   <br>
-                  <div class="card row-hover pos-relative py-1 px-2 mb-1 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1">
+                  <div class="card row-hover pos-relative py-1 px-2 mb-1 border-warning border-top-0 border-right-0 border-bottom-0 rounded-1" href="/comments/<%=topic.post_id%>">
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <h5 class="text-black"><%= topic.subject %></h5>
                             <div class="text-sm op-5"> 
                                 <% if (topic.body.length > 54) { %>
                                     <span style="display: inline"><%= topic.body.substring(0, 54) %></span>
-                                    <a href="/comments/<%=topic.post_id%>" style="display: inline">...</a>       
+                                    <a style="display: inline">...</a>       
                                 <% } else { %>
                                     <a class="text-black mr-2"><%= topic.body %></a>
                                 <% } %>
@@ -52,11 +52,12 @@
                             <div class="row text-center op-7">
                                 <div class="col px-1">
                                     <i class="ion-ios-chatboxes-outline icon-1x"></i> 
-                                    <a class="d-block text-sm" href="/comments/<%=topic.post_id%>">replies</a> 
+                                    <a class="d-block text-sm"><%= topic.comment_count %> replies</a> 
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <a class="view" style="position:absolute; height:100%; width:100%; opacity:0;" href="/comments/<%=topic.post_id%>">View</a>
                   </div>
                 <% }) %> 
               <% } %>
