@@ -90,10 +90,15 @@
 </script>
 
 <!-- For some reason the map only works when the style is on post.ejs itself, instead of in our stylesheet?
-Maybe we could investigate this later. -->
+Maybe we could investigate this later. It's possible that the style is only applied after the map is rendered. -->
 
 <style>
-    #map { position: absolute; width: 50%; height: 50%;}
+    #map { 
+        position: absolute; 
+        width: 50%; 
+        height: 50%;
+        border:3px solid gold;
+    }
 </style>
 
 <%- include ('../partials/footer') %> 
