@@ -1,4 +1,7 @@
 /* Buff Heard CSS Stylesheet */
+body {
+  background-color: var(--cu-boulder-dark-gray);
+}
 
 :root {
     --cu-boulder-gold: #CFB87C;
