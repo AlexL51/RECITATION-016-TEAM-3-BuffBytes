@@ -3,19 +3,7 @@
 
 <!-- Inside Body -->
 
-<script>
-	// TO MAKE THE MAP APPEAR YOU MUST
-	// ADD YOUR ACCESS TOKEN FROM
-	// https://account.mapbox.com
-	mapboxgl.accessToken = 'pk.eyJ1Ijoic2Vhbi1jYXJ0ZXIiLCJhIjoiY2xoNGV6eTI3MDN6MzNsczJib2xzcGR5cyJ9.tj8Zaup8je-h9FLi0zJQhg';
-    const map = new mapboxgl.Map({
-        container: 'map', // container ID
-        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: 'mapbox://styles/mapbox/streets-v12', // style URL
-        center: [0, 52], // starting position [lng, lat]
-        zoom: 5 // starting zoom
-    });
-</script>
+
 
 <main>
     <div class="vh-100" style="background-color: #CFB87C;">
@@ -88,5 +76,19 @@
     </div>
     </div>
 </main>
+
+<script>
+	// TO MAKE THE MAP APPEAR YOU MUST
+	// ADD YOUR ACCESS TOKEN FROM
+	// https://account.mapbox.com
+	mapboxgl.accessToken = 'pk.eyJ1Ijoic2Vhbi1jYXJ0ZXIiLCJhIjoiY2xoNGV6eTI3MDN6MzNsczJib2xzcGR5cyJ9.tj8Zaup8je-h9FLi0zJQhg';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/streets-v12', // style URL
+        center: [0, 52], // starting position [lng, lat]
+        zoom: 5 // starting zoom
+    });
+</script>
 
 <%- include ('../partials/footer') %> 
