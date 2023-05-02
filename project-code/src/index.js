@@ -472,6 +472,55 @@ app.get('/newComment/:post_id/:chain/:user_id', (req,res)=>{
   });
 });
 
+// Insert Map
+
+app.get('/new_map_page', (req, res)=>{
+  res.render('pages/new_map_page.ejs')
+});
+
+app.post('/insert_map', (req, res)=>{
+
+  var long = req.params.long;
+  var lat = req.params.lat;
+  var title = req.params.title;
+  
+  console.log(long, lat, title);
+  // Write a query to modify a post to insert a map with the given characteristics.
+  query = ` 
+    UPDATE topics
+    SET map = true, map_long = $1, map_lat = $2
+    WHERE post_id = $3;
+  `
+  if (title){
+    db.any(query, [
+      long,
+      lat,
+      title
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'map added successfully',
+        });
+
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  } else {
+    res.redirect('home',{
+      message: "Error, map not added",
+    }); 
+  }
+  res.redirect('home')
+});
+
+
 // *********************************
 // Start Server
 // *********************************
