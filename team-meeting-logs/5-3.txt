@@ -1,0 +1,5 @@
+* Work out skeleton of project PDF
+** Fill out sections of project report PDF
+* Do ratings and explanations for all technologies used on the slidedeck -- DONE
+* Work out map insertion bug
+* Practice slidedeck
