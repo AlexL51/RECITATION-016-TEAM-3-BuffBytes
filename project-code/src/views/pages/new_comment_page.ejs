@@ -2,10 +2,11 @@
 <%- include ('../partials/menu') %>
 
 <main>
-    <div class="vh" style="background-color: #CFB87C;">
+    <div class="vh" style="background-color: #CFB87C; min-height: 90vh;">
     <div class = "container" style="padding-top:50px; padding-bottom:50px;">
         <div class="card row-hover pos-relative py-3 px-3 mb-3 rounded-1">    
             <h5 class="text-black" style="font-size:30px;"><%= topic.subject %></h5>
+            <hr>
             <div class="text-sm op-5" style="font-size:20px;"><%= topic.body %></div>
             <br>
             <p class="text-sm">
@@ -19,11 +20,11 @@
         <h5 style="padding-left:30px;">Comments:</h5>
         <% if (chain == 0){ %>
             <form action="/add_comment/<%=post_id%>/<%=chain%>" style="margin-left:10px;" method="POST">
-                <label class="form-label" for="comment_body">Comment</label>
-                <input type="text" id="comment_body" class="form-control form-control-lg" name="body"/>
+                <label class="form-label" for="comment_body">New Comment</label>
+                <input type="text" id="comment_body" class="form-control form-control-lg" name="body" placeholder="Type New Comment"/>
                 <button class="btn btn-dark btn-lg btn-block buff-heard-button" type="add_post">Post!</button>
             </form>
-
+        <br>
         <% } %>
         <% comments.forEach(function(comment){ %>
             <% if(comment.chain == 0){ %>
@@ -44,9 +45,10 @@
                 <% if(chain == comment.comment_id){ %>
                     <form action="/add_comment/<%=post_id%>/<%=chain%>" style="margin-left:20px;" method="POST">
                         <label class="form-label" for="comment_body">Comment</label>
-                        <input type="text" id="comment_body" class="form-control form-control-lg" name="body"/>
+                        <input type="text" id="comment_body" class="form-control form-control-lg" name="body" placeholder="Type Reply"/>
                         <button class="btn btn-dark btn-lg btn-block buff-heard-button" type="add_post">Post!</button>
                     </form>
+                    <br>
                 <% } %>
                 <% var list_ids = [];%>
                 <% list_ids.push(comment.comment_id); %>
@@ -74,9 +76,10 @@
                     <% if(chain == comment1.comment_id) { %>
                         <form action="/add_comment/<%=post_id%>/<%=chain%>" style="margin-left:40px;" method="POST">
                             <label class="form-label" for="comment_body">Comment</label>
-                            <input type="text" id="comment_body" class="form-control form-control-lg" name="body"/>
+                            <input type="text" id="comment_body" class="form-control form-control-lg" name="body" placeholder="Type Reply"/>
                             <button class="btn btn-dark btn-lg btn-block buff-heard-button" type="add_post">Post!</button>
                         </form>
+                        <br>
                     <% } %>
                     <%list_ids.push(comment1.comment_id);%>
                 <%}%>
