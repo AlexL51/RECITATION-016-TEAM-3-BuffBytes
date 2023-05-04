@@ -377,7 +377,7 @@ app.post('/add_post', function (req, res) {
 
   var title1 = req.body.title;
   var post1 = req.body.post;
-  if (title1 != null && post1 != null){
+  if (title1 != '' && post1 != ''){
     const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
     db.any(query, [
       req.body.title1,
@@ -400,11 +400,8 @@ app.post('/add_post', function (req, res) {
       });
   } else {
     console.log("Activated else block.");
-    res.redirect('home',{
-    message: "Title or Body Was Empty, Topic Not Posted",
-    }); 
+    res.redirect('/home'); 
   }
-  res.redirect('home');
 });
 
 
