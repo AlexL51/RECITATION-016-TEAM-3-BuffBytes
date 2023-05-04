@@ -139,7 +139,7 @@ app.post('/add_comment/:post_id/:chain', function (req, res) {
   var topic1 = req.params.post_id;
   var chain1 = req.params.chain; //Is currently a INT, though will be used for nesting if we ever get there.
   var comm1 = req.body.body;
-  if (topic1 != '' && comm1 != ''){
+  if (topic1 != null && comm1 != null){
     const query = `insert into comments (comment_id, post_id, user_id, chain, body) values ((SELECT max(comment_id)+1 FROM comments),'${topic1}','${req.session.user.user_id}','${chain1}', '${comm1}')  returning * ;`;//    const query = `insert into comments (post_id, user_id, chain, body) values ('${topic1}','${req.session.user.user_id}', '${chain1}','${comm1}')  returning * ;`;
     db.any(query, [
       req.params.post_id,
@@ -166,7 +166,9 @@ app.post('/add_comment/:post_id/:chain', function (req, res) {
   }
 
   else{
-    res.redirect('/comments/'+topic1); 
+    res.render('pages/home',{
+    message: "Topic Title or Body Was Empty, Comment Not Posted",
+    }); 
   }
 });
 
@@ -375,7 +377,7 @@ app.post('/add_post', function (req, res) {
 
   var title1 = req.body.title;
   var post1 = req.body.post;
-  if (title1 != '' && post1 != ''){
+  if (title1 != null && post1 != null){
     const query = `insert into topics (user_id, subject, body) values ('${req.session.user.user_id}', '${title1}', '${post1}')  returning * ;`;
     db.any(query, [
       req.body.title1,
@@ -398,9 +400,11 @@ app.post('/add_post', function (req, res) {
       });
   } else {
     console.log("Activated else block.");
-    res.redirect('/home'); 
+    res.redirect('home',{
+    message: "Title or Body Was Empty, Topic Not Posted",
+    }); 
   }
-  res.redirect('/home')
+  res.redirect('home');
 });
 
 
