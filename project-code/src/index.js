@@ -256,14 +256,12 @@ app.post('/register', async (req,res) => {
 });
 
 app.get('/home', (req, res) => {
-  console.log("At home API Request");
   const query = "SELECT t.post_id, u.username, u.profile_image, t.subject, t.body FROM topics t JOIN users u ON t.user_id = u.user_id"; 
   db.any(query)
     .then((topics) => {
       const query2 = "SELECT COUNT(*), post_id FROM comments GROUP BY post_id;";
       db.any(query2)
         .then((commentCount)=>{
-          console.log("Rendering home page!");
           res.render('pages/home', { 
             topics: topics,
             comments: commentCount
@@ -425,8 +423,7 @@ app.get('/comments/:post_id', (req, res)=>{
       db.any(query3)
       .then(function(data2){
         console.log(data2);
-        res.render('pages/post.ejs', {topic: data[0],
-                                    postID: req.params.post_id, 
+        res.render('pages/post.ejs', {topic: data[0], 
                                     comments: data1,
                                     users: data2,
                                     curr_user_id: currentUser,});
@@ -483,32 +480,44 @@ app.get('/new_map_page', (req, res)=>{
 
 app.post('/insert_map', (req, res)=>{
 
-  map_long = req.query.map_long;
-  map_lat = req.query.map_lat;
-  map_zoom = req.query.map_zoom;
-  post_id = req.query.post_id;
+  var long = req.params.long;
+  var lat = req.params.lat;
+  var title = req.params.title;
+  
+  console.log(long, lat, title);
+  // Write a query to modify a post to insert a map with the given characteristics.
+  query = ` 
+    UPDATE topics
+    SET map = true, map_long = $1, map_lat = $2
+    WHERE post_id = $3;
+  `
+  if (title){
+    db.any(query, [
+      long,
+      lat,
+      title
+    ])
+      // if query execution succeeds
+      // send success message
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'map added successfully',
+        });
 
-  console.log("Map attributes: ", map_long, map_lat, map_zoom, post_id);
-
-  console.log(
-    "map_long: ", map_long,
-    "map_lat: ", map_lat,
-    "map_zoom: ", map_zoom,
-    "post_id: ", post_id
-  );
- 
-  // Redirect to add_post function; adding in the attributes of the map.
-  // Or you can add a post first, and then later modify it by adding a map. This might be a bit easier to impelement.
-
-    query = `UPDATE topics
-    SET map=true, map_long=${map_long}, map_lat=${map_lat}, map_zoom=${map_zoom}
-    WHERE post_id=${post_id};`
-
-
-    db.any(query)
-      .then(
-        console.log("Map added successfully.")
-      );
+      })
+      // if query execution fails 
+      // send error message
+      .catch(function (err) {
+        return console.log(err);
+      });
+  } else {
+    res.redirect('home',{
+      message: "Error, map not added",
+    }); 
+  }
+  res.redirect('home')
 });
 
 

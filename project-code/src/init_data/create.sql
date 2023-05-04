@@ -20,7 +20,6 @@ CREATE TABLE topics (
   map BOOLEAN, 
   map_long DECIMAL,
   map_lat DECIMAL,
-  map_zoom DECIMAL,
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
