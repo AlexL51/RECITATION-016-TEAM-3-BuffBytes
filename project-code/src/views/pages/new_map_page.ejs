@@ -26,17 +26,18 @@
                           </div>
                           <text>Move and zoom the map to the location you want to highlight and press the button to add a map showing that location to your post.</text>
                           <text>(Click and drag to pan, use scroll wheel to zoom, ctrl+click and drag to rotate)</text>
+                          <div>Map Information:</div>
+
+                          <div id="long_lat"></div>
+                          <div id="zoom"></div>
 
                           <div style="min-height: 500px; display: flex; justify-content: center; ">
                             <div id="map" style="width: 500px;"></div>
                           </div>
+                          <div class="pt-1 mb-4">
+                            <button class="btn btn-dark btn-lg btn-block buff-heard-button"  onclick="sendMapInfo();">Add Map</button>
+                          </div>
                         </form>
-                        <div class="pt-1 mb-4">
-                          <button class="btn btn-dark btn-lg btn-block buff-heard-button"  onclick=sendMapInfo();>Post</button>
-                        </div>
-                        <div class="pt-1 mb-4">
-                          <a class="btn btn-dark btn-lg btn-block buff-heard-button"  href="/home";>Home</a>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -62,36 +63,22 @@
   document.getElementById("long_lat").innerHTML = map.getCenter();
   document.getElementById("zoom").innerHTML = map.getZoom();
 
-  async function sendMapInfo() {
-    console.log("INSIDE MAP INFO");
-
-    // Set body to send everything we need to modify the database entry to include the map.
-    const long = map.getCenter().lng;
-    const lat = map.getCenter().lat;
-    const zoom =  map.getZoom();
-
-    var current_url = window.location.href;
-    let paramString = current_url.split('?')[1];
-    var post_id = parseInt(paramString.match(/\d+/)[0], 10);
-
-    console.log("long: ", long);
-    console.log("lat: " , lat);
-    console.log("zoom: ", zoom);
-    console.log("post_id: ", post_id);
-
-    var url = `/insert_map?map_long=${long}&map_lat=${lat}&map_zoom=${zoom}&post_id=${post_id}`;
-    console.log("url: ", url);
-    const response = fetch(url, {
-      method: 'POST',
-      body: {
-        map_long: long,
-        map_lat: lat,
-        map_zoom: zoom
-      }
-    });
-    // const myJson = await response.json(); //extract JSON from the http response
+  function sendMapInfo() {
+    // Set headers to proper latitude and longitude
+    console.log(map.getCenter());
+    console.log(map.getZoom());
+    const userAction = async () => {
+    var url = "/insert_map?"
+      const response = await fetch('/insert_map?', {
+        method: 'POST',
+        body: myBody, // string or object
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    const myJson = await response.json(); //extract JSON from the http response
     // do something with myJson
-};
+}};
   
 
 </script>
