@@ -12,10 +12,18 @@
             <div class="text-sm op-5" style="font-size:20px;"><%= topic.body %></div>
             <div style="min-height: 300px;">
                 <% if (topic.map) {%>
-                    <div id="map"></div>
+                    <flex  style="display: flex; justify-content: center; margin-top: 30px;">
+                        <div id="map" ></div>
+                    </flex>
                 <% } %>
             </div>
             <br>
+
+            <!-- TODO: Only the post author should be able to see this button -->
+            <% if (!topic.map) { %>
+                    <a class="btn btn-dark btn-lg btn-block buff-heard-button"  href=/new_map_page?id=<%=postID%>> Add a Map</a>
+            <% } %>
+
             <p class="text-sm">
                 <span class="op-6">Posted by</span>
                 <a class="text-black" href="#">
@@ -83,8 +91,8 @@
         container: 'map', // container ID
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/mapbox/streets-v12', // style URL
-        center: [0, 52], // starting position [lng, lat]
-        zoom: 5 // starting zoom
+        center: [<%= topic.map_long %>, <%= topic.map_lat %>], // starting position [lng, lat]
+        zoom: 16 // starting zoom
     });
 </script>
 
