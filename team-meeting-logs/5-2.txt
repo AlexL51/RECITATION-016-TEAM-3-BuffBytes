@@ -1,0 +1,25 @@
+From Nikita: What you Need for your Final Presentation:
+
+* Final Presentation URL
+* Title of the project
+* Names of each person in the group
+* Description of the project
+* All the tools your group used
+* Expected tools
+* MAKE SURE YOU HAVE USED ALL OF THE EXPECTED TOOLS111 
+* How much you used and how much you liked it
+* For each feature give it a star rating
+* Architecture Diagram
+* Database, external API, MapBox
+* Challenges: what were the challenges you faced and how did you overcome them? 
+* Did you change plans or did you keep trying and it finally worked? 
+* Do a LIVE DEMO AT THE END EVERYTHING MUST BE PERFECT 
+* You have ten minutes to present AND demo 
+* Your tiniest details don't matter; save that for the final questioning period 
+* Practice two or three times; understadn what the flow is. 
+* We'll first test the register page, then we'll try login, etc.
+* Keep the entire presentation very scripted 
+* Record a video of that IN CASE THE PROJECT DOESN'T WORK ON PRESENTATION DAY!!! 
+* Both together must be ten minutes; everyone must get to speak 
+* Only one person must submit the PDF on the slides 
+* Just one person can submit on canvas
